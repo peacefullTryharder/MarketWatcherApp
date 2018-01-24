@@ -4,5 +4,10 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <string name="logEmail">Adresse e-mail</string>
+    <string name="logPassword">Mot de passe</string>
+    <string name="logConnect">Connexion</string>
+
+
     <string name="action_settings">Settings</string>
 </resources>
