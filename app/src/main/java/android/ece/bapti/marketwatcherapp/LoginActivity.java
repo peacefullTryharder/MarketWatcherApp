@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
 
+    // Temporary logins
     private String email = "baptiste.ludot@gmail.com";
     private String password = "1234";
 
@@ -33,18 +34,22 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
 
-                if(mEmailView.getText().toString().equals(email) &&
+                // To unable lately
+                HomeIntent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(HomeIntent);
+
+                // To Activate lately
+                /* if(mEmailView.getText().toString().equals(email) &&
                         mPasswordView.getText().toString().equals(password))
                 {
-                    HomeIntent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(HomeIntent);
+
                 }
                 else
                 {
                     Toast.makeText(getApplicationContext(),"Identifiants incorrects",Toast.LENGTH_SHORT).show();
                     // mEmailView.setText(null);
                     mPasswordView.setText(null);
-                }
+                } */
 
             }
         });
