@@ -20,6 +20,7 @@ public abstract class BaseActivity extends AppCompatActivity
     public Intent MainActivity;
     public Intent LoginActivity;
     public Intent CatalogActivity;
+    public Intent ArticleActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,11 +88,17 @@ public abstract class BaseActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_add) {
 
+            ArticleActivity = new Intent(getApplicationContext(), ArticleActivity.class);
+            startActivity(ArticleActivity);
+
         } else if (id == R.id.nav_contact) {
 
         } else if (id == R.id.nav_disconnect) {
+
             LoginActivity = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(LoginActivity);
+
+            Toast.makeText(getApplicationContext(),"Vous avez été déconnecté",Toast.LENGTH_SHORT).show();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

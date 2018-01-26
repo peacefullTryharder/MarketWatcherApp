@@ -7,23 +7,39 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="20dp">
 
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Bienvenue sur MarketWatcher"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="?attr/colorControlNormal"
-                    android:layout_centerHorizontal="true" />
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Bienvenue sur MarketWatcher"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="?attr/colorControlNormal" />
 
-                <ImageView
+    <ImageView
                     android:id="@+id/imageView"
                     android:layout_width="180dp"
                     android:layout_height="180dp"
                     app:srcCompat="@drawable/green_logo"
                     android:layout_below="@+id/textView"
                     android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/homeMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="Vous en avez marre des passer des heures à chercher le meilleur prix pour cette télévision qui vous fait de l'oeil ? Ou bien de traquer une réduction de prix pour remplacer votre casque audio ?"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:id="@+id/homeMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MarketWatcher est l'outil idéal qui vous facilite cette tâche et conseil les meilleurs prix sur votre prochain achat. Notre application vous montrera, sur un produit compris dans notre catalogue, les différentes marketplaces en ligne où il est vendu ainsi que l'évolution de son prix au cours du temps. Nous vous proposons en plus d'un historique des prix, une prédiction du coût de l'objet dans les semaines à venir. Ainsi MarketWatcher sera le guide parfait lors de vos futurs achats."
+        android:textAlignment="center" />
 
 </LinearLayout>

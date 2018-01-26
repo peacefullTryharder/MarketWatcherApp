@@ -35,21 +35,22 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view){
 
                 // To unable lately
-                HomeIntent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(HomeIntent);
+                /* HomeIntent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(HomeIntent); */
 
                 // To Activate lately
-                /* if(mEmailView.getText().toString().equals(email) &&
+                if(mEmailView.getText().toString().equals(email) &&
                         mPasswordView.getText().toString().equals(password))
                 {
-
+                    HomeIntent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(HomeIntent);
                 }
                 else
                 {
                     Toast.makeText(getApplicationContext(),"Identifiants incorrects",Toast.LENGTH_SHORT).show();
                     // mEmailView.setText(null);
                     mPasswordView.setText(null);
-                } */
+                }
 
             }
         });
