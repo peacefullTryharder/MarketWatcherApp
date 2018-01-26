@@ -6,5 +6,5 @@
     <color name="textColorPrimary">#FFFFFF</color>
     <color name="navigationBarControl">#000000</color>
     <color name="windowBackground">#FFFFFF</color>
-    <color name="loginWindowBackground">#5DBE62</color>
+    <color name="loginWindowBackground">#5dbe62</color>
 </resources>

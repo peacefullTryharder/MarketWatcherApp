@@ -22,7 +22,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".CatalogActivity" />
-        <activity android:name=".BaseActivity"></activity>
+        <activity android:name=".BaseActivity" />
+        <activity android:name=".ArticleActivity"></activity>
     </application>
 
 </manifest>

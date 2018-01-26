@@ -17,12 +17,13 @@ import android.widget.Toast;
 public abstract class BaseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public Intent MainActivity;
     public Intent LoginActivity;
     public Intent CatalogActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+                super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -45,9 +46,14 @@ public abstract class BaseActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        selectActualItemOnTheNavigationDrawer(navigationView);
 
-        /* à gérer:
-        navigationView.setCheckedItem(R.id.nav_home); */
+    }
+
+    public void selectActualItemOnTheNavigationDrawer(NavigationView navigationView)
+    {
+        if (getTitle().equals(getString(R.string.home))) navigationView.setCheckedItem(R.id.nav_home);
+        else if (getTitle().equals(getString(R.string.catalog))) navigationView.setCheckedItem(R.id.nav_catalog);
     }
 
     @Override
@@ -63,14 +69,20 @@ public abstract class BaseActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
-            // Handle the camera action
-        } else if (id == R.id.nav_catalog) {
+        if (id == R.id.nav_home && !getTitle().equals(getString(R.string.home))) {
+
+            MainActivity = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(MainActivity);
+
+        } else if (id == R.id.nav_catalog && !getTitle().equals(getString(R.string.catalog))) {
+
             CatalogActivity = new Intent(getApplicationContext(), CatalogActivity.class);
             startActivity(CatalogActivity);
+
         } else if (id == R.id.nav_deals) {
 
         } else if (id == R.id.nav_add) {
