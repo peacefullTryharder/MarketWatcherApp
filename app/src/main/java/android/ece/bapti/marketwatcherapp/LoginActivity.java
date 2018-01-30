@@ -43,18 +43,16 @@ public class LoginActivity extends AppCompatActivity {
                 /* HomeIntent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(HomeIntent); */
 
-                //To unable Lately
-                /*
                 mail = mEmailView.getText().toString();
                 pw = mPasswordView.getText().toString();
                 Log.i("mail : " +mail+ " ; pw : " +pw);
                 try {
                   // Encoding Query parameters
-                  String donnees = URLEncoder.encode("login", "ISO-8859-1")+ "="+URLEncoder.encode(mail, "ISO-8859-1");
-                  donnees += "&"+URLEncoder.encode("password", "ISO-8859-1")+ "=" + URLEncoder.encode(pw, "ISO-8859-1");
+                  String donnees = URLEncoder.encode("login" (ou autre), "ISO-8859-1")+ "="+URLEncoder.encode(mail, "ISO-8859-1");
+                  donnees += "&"+URLEncoder.encode("password" (ou autre), "ISO-8859-1")+ "=" + URLEncoder.encode(pw, "ISO-8859-1");
                   
                   // We sent data on a distant adress
-                  String api = Connexion.GET("http://..."+donnees);
+                  String api = LoginActivity.getRequestUrl("http://..."+donnees);
                   Log.i("api", "result request : "+api);
                   info = new JSONObject(api);
                   connect = info.getBoolean("connect");
@@ -94,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
 
-    public static String GET(String url){
+    public static String getRequestUrl(String url){
         InputStream inputStream = null;
         String result = "";
         try {
