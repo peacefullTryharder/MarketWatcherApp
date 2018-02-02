@@ -3,131 +3,207 @@ package android.ece.bapti.marketwatcherapp;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+
 import android.widget.EditText;
 import android.widget.Toast;
+import java.io.DataOutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import org.json.JSONObject;
+import android.text.TextWatcher;
+import android.text.Editable;
+
 
 public class LoginActivity extends AppCompatActivity {
 
     // Temporary logins
     private String email = "baptiste.ludot@gmail.com";
     private String password = "1234";
-
     public Intent HomeIntent;
+    private int status = 0;
 
-    AutoCompleteTextView mEmailView = null;
-    EditText mPasswordView = null;
-    Button mSubmitView = null;
+    AutoCompleteTextView mLogEmailView = null;
+    EditText mLogPasswordView = null;
+    EditText mRegNameView = null;
+    EditText mRegPasswordView = null;
+    AutoCompleteTextView mRegEmailView = null;
+    Button mLogSubmitView = null;
+    Button mRegSubmitView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.logEmail);
-        mPasswordView = (EditText) findViewById(R.id.logPassword);
-        mSubmitView = (Button) findViewById(R.id.logSubmit);
+        mLogEmailView = (AutoCompleteTextView) findViewById(R.id.logEmail);
+        mLogPasswordView = (EditText) findViewById(R.id.logPassword);
+        mRegNameView = (EditText) findViewById(R.id.regName);
+        mRegPasswordView = (EditText) findViewById(R.id.regPassword);
+        mRegEmailView = (AutoCompleteTextView) findViewById(R.id.regEmail);
+        mLogSubmitView = (Button) findViewById(R.id.logSubmit);
+        mRegSubmitView = (Button) findViewById(R.id.regSubmit);
 
         // An appropriate listener is assigned to the views that need it
-        mSubmitView.setOnClickListener(submitListener);
+        mLogEmailView.addTextChangedListener(textWatcher);
+        mLogPasswordView.addTextChangedListener(textWatcher);
+        mRegNameView.addTextChangedListener(textWatcher);
+        mRegEmailView.addTextChangedListener(textWatcher);
+        mRegPasswordView.addTextChangedListener(textWatcher);
+
+        mLogSubmitView.setOnClickListener(loginListener);
+        mRegSubmitView.setOnClickListener(registerListener);
 
     }
 
-    public OnClickListener submitListener = new OnclickListener () {
-            @Override
-            public void onClick(View view){
+    public OnClickListener loginListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
 
-                // To unable lately
-                /* HomeIntent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(HomeIntent); */
+            sendPostLogin();
 
-                mail = mEmailView.getText().toString();
-                pw = mPasswordView.getText().toString();
-                Log.i("mail : " +mail+ " ; pw : " +pw);
-                try {
-                  // Encoding Query parameters
-                  String donnees = URLEncoder.encode("login" (ou autre), "ISO-8859-1")+ "="+URLEncoder.encode(mail, "ISO-8859-1");
-                  donnees += "&"+URLEncoder.encode("password" (ou autre), "ISO-8859-1")+ "=" + URLEncoder.encode(pw, "ISO-8859-1");
-                  
-                  // We sent data on a distant adress
-                  String api = LoginActivity.getRequestUrl("http://..."+donnees);
-                  Log.i("api", "result request : "+api);
-                  info = new JSONObject(api);
-                  connect = info.getBoolean("connect");
-                } catch (Exception e) {
-                  e.printStackTrace();
-                }
-                //If the account exists
-                if( connect == true)
-                {
-                    //Start new activity
-                    HomeIntent = new Intent(self, MainActivity.class);
-                    startActivity(HomeIntent);
-
-                }
-                else if (connect ==false)
-                {
-                    Toast.makeText(getApplicationContext(),"Identifiants incorrects",Toast.LENGTH_SHORT).show();
-                    // mEmailView.setText(null);
-                    mPasswordView.setText(null);
-                }
-                */
-
-                // To Activate lately
-                if(mEmailView.getText().toString().equals(email) &&
-                        mPasswordView.getText().toString().equals(password))
-                {
-                    HomeIntent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(HomeIntent);
-                }
-                else
-                {
-                    Toast.makeText(getApplicationContext(),"Identifiants incorrects",Toast.LENGTH_SHORT).show();
-                    // mEmailView.setText(null);
-                    mPasswordView.setText(null);
-                }
-
+            if(mLogEmailView.getText().toString().equals(email) &&
+                    mLogPasswordView.getText().toString().equals(password))
+            {
+                HomeIntent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(HomeIntent);
             }
-        };
-
-    public static String getRequestUrl(String url){
-        InputStream inputStream = null;
-        String result = "";
-        try {
-
-              // create HttpClient
-            HttpClient httpclient = new DefaultHttpClient();
-
-            // make GET request to the given URL
-            HttpResponse httpResponse = httpclient.execute(new HttpGet(url));
-
-            // receive response as inputStream
-            inputStream = httpResponse.getEntity().getContent();
-
-            // convert inputstream to string
-            if(inputStream != null)
-                result = convertInputStreamToString(inputStream);
             else
-                result = "Did not work!";
+            {
+                Toast.makeText(getApplicationContext(),"Identifiants incorrects",Toast.LENGTH_SHORT).show();
+                // mEmailView.setText(null);
+                mLogPasswordView.setText(null);
+            }
 
-        } catch (Exception e) {
-            Log.d("InputStream", e.getLocalizedMessage());
+        }
+    };
+
+    public OnClickListener registerListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            if(sendPostRegister() == 200) {
+                Toast.makeText(getApplicationContext(),"Vous avez bien été inscrit. Connectez-vous maintenant",Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                Toast.makeText(getApplicationContext(),"Désolé, nous n'avons pas réussi à vous enregistrer",Toast.LENGTH_SHORT).show();
+                mRegNameView.setText(null);
+                mRegEmailView.setText(null);
+                mRegPasswordView.setText(null);
+            }
+        }
+    };
+
+    //Méthode pour agir sur les editText
+    private TextWatcher textWatcher = new TextWatcher() {
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
         }
 
-        return result;
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count,
+                                      int after) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
+
+
+    public int sendPostRegister() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL("http://api.marketwatcher.fr/user/register");
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                    conn.setRequestProperty("Accept", "application/json;charset=UTF-8");
+                    conn.setRequestProperty("Authorization","Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1YTcxZGFlOGY2ZWZhZTEzYzVmY2Q1NWMiLCJpYXQiOjE1MTc0MTEzMDgsImV4cCI6MTUxNzg0MzMwOH0.wcxs9twlGeWN8To-C2FGTzd82TrxzNnGgRgTCKDq7RQ");
+                    conn.setDoOutput(true);
+                    conn.setDoInput(true);
+
+                    JSONObject jsonParam = new JSONObject();
+                    jsonParam.put("email", mRegEmailView.getText().toString());
+                    jsonParam.put("name", mRegNameView.getText().toString());
+                    jsonParam.put("password", mRegPasswordView.getText().toString());
+
+                    Log.i("JSON", jsonParam.toString());
+                    DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+                    //os.writeBytes(URLEncoder.encode(jsonParam.toString(), "UTF-8"));
+                    os.writeBytes(jsonParam.toString());
+
+                    os.flush();
+                    os.close();
+
+                    status = conn.getResponseCode();
+
+                    Log.i("STATUS", String.valueOf(conn.getResponseCode()));
+                    Log.i("MSG" , conn.getResponseMessage());
+
+                    conn.disconnect();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
+
+        return  status;
+
     }
 
-    private static String convertInputStreamToString(InputStream inputStream) throws IOException{
-        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
-        String line = "";
-        String result = "";
-        while((line = bufferedReader.readLine()) != null)
-            result += line;
+    public void sendPostLogin() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL("http://api.marketwatcher.fr/user/token");
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                    conn.setRequestProperty("Accept", "application/json;charset=UTF-8");
+                    //conn.setRequestProperty("Authorization","Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1YTcxZGFlOGY2ZWZhZTEzYzVmY2Q1NWMiLCJpYXQiOjE1MTc0MTEzMDgsImV4cCI6MTUxNzg0MzMwOH0.wcxs9twlGeWN8To-C2FGTzd82TrxzNnGgRgTCKDq7RQ");
+                    conn.setDoOutput(true);
+                    conn.setDoInput(true);
 
-        inputStream.close();
-        return result;
+                    JSONObject jsonParam = new JSONObject();
+                    jsonParam.put("email", mLogEmailView.getText().toString());
+                    jsonParam.put("password", mLogPasswordView.getText().toString());
 
+                    Log.i("JSON", jsonParam.toString());
+                    DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+                    //os.writeBytes(URLEncoder.encode(jsonParam.toString(), "UTF-8"));
+                    os.writeBytes(jsonParam.toString());
+
+                    os.flush();
+                    os.close();
+
+
+                    Log.i("STATUS", String.valueOf(conn.getResponseCode()));
+                    Log.i("MSG" , conn.getResponseMessage());
+
+                    conn.disconnect();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
     }
+
 }
