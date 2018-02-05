@@ -1,4 +1,4 @@
-package android.ece.bapti.marketwatcherapp;
+package fr.marketwatcher.app;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("android.ece.bapti.marketwatcherapp", appContext.getPackageName());
+        assertEquals("fr.marketwatcher.app", appContext.getPackageName());
     }
 }

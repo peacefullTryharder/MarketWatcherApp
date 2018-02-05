@@ -1,22 +1,24 @@
-package android.ece.bapti.marketwatcherapp;
-
-import java.util.Date;
+package fr.marketwatcher.app;
 
 /**
  * Created by bapti on 31/01/2018.
  */
 
 public class CatalogItem {
-    private String name, imageUrl, date, googleId;
+    private String name, imageUrl, date, googleId, brand, model, category;
     // private String price;
     // private Date date;
 
-    public CatalogItem(String name, String imageUrl, String date, String googleId)
+    public CatalogItem(String name, String imageUrl, String date, String googleId, String brand,
+                       String model, String category)
     {
         this.name = name;
         this.imageUrl = imageUrl;
         this.date = date;
         this.googleId = googleId;
+        this.brand = brand;
+        this.model = model;
+        this.category = category;
     }
 
     public String getName()
@@ -32,6 +34,9 @@ public class CatalogItem {
     {
         return googleId;
     }
+    public String getBrand() { return brand; }
+    public String getModel() { return model; }
+    public String getCategory() { return category; }
 
     public void setName(String name)
     {
@@ -46,5 +51,8 @@ public class CatalogItem {
     {
         this.googleId = googleId;
     }
+    public void setBrand(String brand) { this.brand = brand; }
+    public void setModel(String model) { this.model = model; }
+    public void setCategory(String category) { this.category = category; }
 
 }

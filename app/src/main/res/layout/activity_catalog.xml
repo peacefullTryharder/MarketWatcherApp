@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="android.ece.bapti.marketwatcherapp.CatalogActivity"
+    tools:context="android.fr.marketwatcher.app.android.marketwatcher.app.CatalogActivity"
     android:focusable="true"
     android:focusableInTouchMode="true">
 

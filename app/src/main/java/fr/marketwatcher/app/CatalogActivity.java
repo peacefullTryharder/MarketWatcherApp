@@ -1,47 +1,39 @@
-package android.ece.bapti.marketwatcherapp;
+package fr.marketwatcher.app;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CatalogActivity extends BaseActivity {
 
     String JsonURL;
     RequestQueue requestQueue;
+    String access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1YTcxZGFlOGY2ZWZhZTEzYzVmY2Q1NWMiLCJpYXQiOjE1MTc0MTEzMDgsImV4cCI6MTUxNzg0MzMwOH0.wcxs9twlGeWN8To-C2FGTzd82TrxzNnGgRgTCKDq7RQ";
+
 
     private ListView mListView;
     private EditText catalogSearch;
-
-    Intent ArticleIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +74,8 @@ public class CatalogActivity extends BaseActivity {
                             public void onResponse(JSONArray response) {
                                 try {
 
+                                    items.clear();
+
                                     JSONObject jsonObject;
 
                                     for (int i=0; i<response.length(); i++)
@@ -92,12 +86,14 @@ public class CatalogActivity extends BaseActivity {
                                                 jsonObject.getString("name"),
                                                 jsonObject.getString("image"),
                                                 jsonObject.getString("insertedAt"),
-                                                jsonObject.getString("googleId")));
+                                                jsonObject.getString("googleId"),
+                                                jsonObject.getString("brand"),
+                                                jsonObject.has("model") ? jsonObject.getString("model") : "",
+                                                jsonObject.getString("category")));
                                     }
 
                                     CatalogItemAdapter adapter = new CatalogItemAdapter(CatalogActivity.this, items);
                                     mListView.setAdapter(adapter);
-                                    Toast.makeText(CatalogActivity.this, "PASSAGE", Toast.LENGTH_SHORT).show();
                                 }
                                 // Try and catch are included to handle any errors due to JSON
                                 catch (JSONException e) {
@@ -115,27 +111,19 @@ public class CatalogActivity extends BaseActivity {
                                 Log.e("Volley", "Error");
                             }
                         }
-                );
+                ){
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        Map<String, String> headers = new HashMap<>();
+                        headers.put("Content-Type", "application/json");
+                        headers.put("Authorization", "Bearer " + access_token);
+                        return headers;
+                    }
+                };
 
                 requestQueue.add(arrayReq);
 
             }
         });
-
-        /* LinearLayout article = (LinearLayout) findViewById(R.id.article);
-        article.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-
-                // Pour l'utilisation avec l'API => Transmettre avec des données (ex: un ID pour refaire
-                // des appels dans l'activité Article
-                ArticleIntent = new Intent(CatalogActivity.this, ArticleActivity.class);
-                startActivity(ArticleIntent);
-
-            }
-        }); */
-
-
-        // Adds the JSON object request "obreq" to the request queue
     }
 }

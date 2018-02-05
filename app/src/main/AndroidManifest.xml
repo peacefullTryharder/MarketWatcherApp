@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="android.ece.bapti.marketwatcherapp">
+    package="fr.marketwatcher.app">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -24,8 +24,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".CatalogActivity" />
-        <activity android:name=".BaseActivity" />
-        <activity android:name=".ArticleActivity"></activity>
+        <activity android:name=".ArticleActivity" />
     </application>
 
 </manifest>

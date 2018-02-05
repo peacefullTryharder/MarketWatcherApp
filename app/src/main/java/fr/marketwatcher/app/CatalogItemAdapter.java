@@ -1,14 +1,13 @@
-package android.ece.bapti.marketwatcherapp;
+package fr.marketwatcher.app;
 
 /**
  * Created by bapti on 31/01/2018.
  */
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,14 +42,28 @@ public class CatalogItemAdapter extends ArrayAdapter<CatalogItem> {
             convertView.setTag(viewHolder);
         }
 
-        //getItem(position) va récupérer l'item [position] de la List<Tweet> tweets
-        CatalogItem catalogItem = getItem(position);
-        viewHolder.txtNameArticle.setText(tempName(catalogItem.getName()));
-        viewHolder.txtAboutArticle.setText(extractDescription(catalogItem.getName()));
+        final CatalogItem catalogItem = getItem(position);
+
+        viewHolder.txtNameArticle.setText(
+                ((catalogItem.getCategory() != "null") ?
+                        catalogItem.getCategory() + " " : "") +
+                        catalogItem.getBrand() + " " +
+                        catalogItem.getModel());
+
+        viewHolder.txtAboutArticle.setText(catalogItem.getName());
 
         new DownloadImageFromInternet(viewHolder.imgArticle)
                 .execute(catalogItem.getImageUrl());
-        // viewHolder.avatar.setImageDrawable(new ColorDrawable(#FFFFFF));
+
+        convertView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent ArticleIntent = new Intent(getContext(), ArticleActivity.class);
+                ArticleIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                ArticleIntent.putExtra("googleId", catalogItem.getGoogleId());
+                getContext().startActivity(ArticleIntent);
+            }
+        });
 
         return convertView;
     }
@@ -86,50 +99,5 @@ public class CatalogItemAdapter extends ArrayAdapter<CatalogItem> {
         protected void onPostExecute(Bitmap result) {
             imageView.setImageBitmap(result);
         }
-    }
-
-    public String tempName(String fullName)
-    {
-        String finaleName = fullName.split(" - ")[0];
-
-        if (finaleName == null) finaleName = fullName.split 
-        return fullName.split(" - ")[0];
-    }
-
-    public String extractDescription(String fullName)
-    {
-        return fullName.split(" - ", 2)[1];
-    }
-
-    public String dateTransform(String date)
-    {
-        String year = date.split("-")[0];
-        String month;
-
-        switch(Integer.parseInt(date.split("-")[1]))
-        {
-            case 1:
-                month = "Janvier";
-                break;
-            case 2:
-                month = "Février";
-                break;
-            case 3:
-                month = "Mars";
-                break;
-            case 4:
-                month = "Avril";
-                break;
-            case 5:
-                month = "Mai";
-                break;
-            case 6:
-                month = "Juin";
-            default:
-                month = "mdr";
-                break;
-        }
-
-        return month + " " + year;
     }
 }

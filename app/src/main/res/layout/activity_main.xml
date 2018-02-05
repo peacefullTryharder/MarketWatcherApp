@@ -36,7 +36,7 @@
         android:layout_marginBottom="20dp"/>
 
     <TextView
-        android:id="@+id/homeMessage"
+        android:id="@+id/homeMessage2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="MarketWatcher est l'outil idéal qui vous facilite cette tâche et conseil les meilleurs prix sur votre prochain achat. Notre application vous montrera, sur un produit compris dans notre catalogue, les différentes marketplaces en ligne où il est vendu ainsi que l'évolution de son prix au cours du temps. Nous vous proposons en plus d'un historique des prix, une prédiction du coût de l'objet dans les semaines à venir. Ainsi MarketWatcher sera le guide parfait lors de vos futurs achats."

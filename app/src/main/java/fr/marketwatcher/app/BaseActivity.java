@@ -1,4 +1,4 @@
-package android.ece.bapti.marketwatcherapp;
+package fr.marketwatcher.app;
 
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
@@ -11,7 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public abstract class BaseActivity extends AppCompatActivity

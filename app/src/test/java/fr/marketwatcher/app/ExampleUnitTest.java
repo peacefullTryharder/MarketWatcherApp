@@ -1,4 +1,4 @@
-package android.ece.bapti.marketwatcherapp;
+package fr.marketwatcher.app;
 
 import org.junit.Test;
 

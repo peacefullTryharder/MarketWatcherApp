@@ -7,8 +7,6 @@
     <string name="logEmail">Adresse e-mail</string>
     <string name="logPassword">Mot de passe</string>
     <string name="logConnect">Connexion</string>
-    <string name="regConnect">S\'inscrire</string>
-    <string name="logName">Nom et prénom</string>
 
     <!-- Activities -->
     <string name="home">Accueil</string>
