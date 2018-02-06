@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -29,7 +30,7 @@ public class CatalogActivity extends BaseActivity {
 
     String JsonURL;
     RequestQueue requestQueue;
-    String access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1YTcxZGFlOGY2ZWZhZTEzYzVmY2Q1NWMiLCJpYXQiOjE1MTc0MTEzMDgsImV4cCI6MTUxNzg0MzMwOH0.wcxs9twlGeWN8To-C2FGTzd82TrxzNnGgRgTCKDq7RQ";
+    String access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1YTc4ODExZjgyNmVmYzdlYzE2M2VlOGUiLCJpYXQiOjE1MTc4NDY5NzUsImV4cCI6MTUxODI3ODk3NX0.o8D3henhAztT-JTuX8ihePR0sWqVL6Sw4OoQENc4jR0";
 
 
     private ListView mListView;
@@ -43,7 +44,7 @@ public class CatalogActivity extends BaseActivity {
 
         final List<CatalogItem> items = new ArrayList<CatalogItem>();
 
-        mListView = (ListView) findViewById(R.id.list);
+        mListView = (ListView) findViewById(R.id.listCatalog);
         catalogSearch = (EditText) findViewById(R.id.catalogSearch);
 
         catalogSearch.addTextChangedListener(new TextWatcher() {
@@ -84,12 +85,14 @@ public class CatalogActivity extends BaseActivity {
 
                                         items.add(new CatalogItem(
                                                 jsonObject.getString("name"),
-                                                jsonObject.getString("image"),
+                                                jsonObject.has("image") ? jsonObject.getString("image") : "",
                                                 jsonObject.getString("insertedAt"),
                                                 jsonObject.getString("googleId"),
-                                                jsonObject.getString("brand"),
+                                                jsonObject.has("brand") ? jsonObject.getString("brand") : "",
                                                 jsonObject.has("model") ? jsonObject.getString("model") : "",
-                                                jsonObject.getString("category")));
+                                                jsonObject.getString("category"),
+                                                jsonObject.has("history") ? jsonObject.getJSONObject("history").getDouble("min") : 0,
+                                                jsonObject.has("history") ? jsonObject.getJSONObject("history").getDouble("max") : 0));
                                     }
 
                                     CatalogItemAdapter adapter = new CatalogItemAdapter(CatalogActivity.this, items);
@@ -98,6 +101,7 @@ public class CatalogActivity extends BaseActivity {
                                 // Try and catch are included to handle any errors due to JSON
                                 catch (JSONException e) {
                                     // If an error occurs, this prints the error to the log
+                                    Toast.makeText(CatalogActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                                     e.printStackTrace();
                                 }
                             }

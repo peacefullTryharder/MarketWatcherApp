@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="50dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="#f0f0f0">
+
+    <ImageView
+        android:id="@+id/imgMarketplace"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"/>
+
+    <TextView
+        android:id="@+id/txtNameMarketplace"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:text="Marketplace"
+        android:textColor="#000000"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/imgMarketplace"/>
+
+    <LinearLayout
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:background="@color/colorPrimaryDark"
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:clickable="true">
+
+        <TextView
+            android:id="@+id/txtPriceMarketplace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Price"
+            android:textSize="22dp"
+            android:textColor="#FFFFFF"
+            android:layout_gravity="center"/>
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/ic_play_arrow_black_24dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:backgroundTint="#FFFFFF" />
+        <!-- <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="5dp"/> -->
+
+    </LinearLayout>
+
+
+</RelativeLayout>

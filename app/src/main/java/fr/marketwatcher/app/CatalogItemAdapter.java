@@ -33,24 +33,41 @@ public class CatalogItemAdapter extends ArrayAdapter<CatalogItem> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.row_catalog,parent, false);
         }
 
-        TweetViewHolder viewHolder = (TweetViewHolder) convertView.getTag();
+        ItemViewHolder viewHolder = (ItemViewHolder) convertView.getTag();
+
         if(viewHolder == null){
-            viewHolder = new TweetViewHolder();
+            viewHolder = new ItemViewHolder();
             viewHolder.txtNameArticle = (TextView) convertView.findViewById(R.id.txtNameArticle);
             viewHolder.txtAboutArticle = (TextView) convertView.findViewById(R.id.txtAboutArticle);
             viewHolder.imgArticle = (ImageView) convertView.findViewById(R.id.imgArticle);
+            viewHolder.txtMinPriceArticle = (TextView) convertView.findViewById(R.id.txtMinPriceArticle);
+            viewHolder.txtMaxPriceArticle = (TextView) convertView.findViewById(R.id.txtMaxPriceArticle);
             convertView.setTag(viewHolder);
         }
 
         final CatalogItem catalogItem = getItem(position);
 
         viewHolder.txtNameArticle.setText(
-                ((catalogItem.getCategory() != "null") ?
-                        catalogItem.getCategory() + " " : "") +
-                        catalogItem.getBrand() + " " +
+                catalogItem.getBrand() + " " +
                         catalogItem.getModel());
 
         viewHolder.txtAboutArticle.setText(catalogItem.getName());
+
+        viewHolder.txtMinPriceArticle.setText((catalogItem.getPriceMin() != 0) ?
+                (
+                        ((Integer.parseInt(("" + catalogItem.getPriceMin()).split("\\.")[1]) == 0) ?
+                                ("" + catalogItem.getPriceMin()).split("\\.")[0] :
+                                (("" + catalogItem.getPriceMin()).split("\\.")[0]
+                                    + "," + ("" + catalogItem.getPriceMin()).split("\\.")[1])) + "€"
+                        ) : "");
+
+        viewHolder.txtMaxPriceArticle.setText((catalogItem.getPriceMax() != 0) ?
+                (
+                        ((Integer.parseInt(("" + catalogItem.getPriceMax()).split("\\.")[1]) == 0) ?
+                                ("" + catalogItem.getPriceMax()).split("\\.")[0] :
+                                (("" + catalogItem.getPriceMax()).split("\\.")[0]
+                                        + "," + ("" + catalogItem.getPriceMax()).split("\\.")[1])) + "€"
+                ) : "");
 
         new DownloadImageFromInternet(viewHolder.imgArticle)
                 .execute(catalogItem.getImageUrl());
@@ -68,36 +85,12 @@ public class CatalogItemAdapter extends ArrayAdapter<CatalogItem> {
         return convertView;
     }
 
-    private class TweetViewHolder{
+    private class ItemViewHolder{
         public TextView txtNameArticle;
         public TextView txtAboutArticle;
         public ImageView imgArticle;
+        public TextView txtMinPriceArticle;
+        public TextView txtMaxPriceArticle;
 
-    }
-
-    private class DownloadImageFromInternet extends AsyncTask<String, Void, Bitmap> {
-        ImageView imageView;
-
-        public DownloadImageFromInternet(ImageView imageView) {
-            this.imageView = imageView;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String imageURL = urls[0];
-            Bitmap bimage = null;
-            try {
-                InputStream in = new java.net.URL(imageURL).openStream();
-                bimage = BitmapFactory.decodeStream(in);
-
-            } catch (Exception e) {
-                Log.e("Error Message", e.getMessage());
-                e.printStackTrace();
-            }
-            return bimage;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            imageView.setImageBitmap(result);
-        }
     }
 }
