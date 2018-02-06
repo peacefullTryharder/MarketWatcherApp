@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,6 +36,7 @@ public class MarketplaceItemAdapter extends ArrayAdapter<MarketplaceItem> {
             viewHolder.txtNameMarketplace = (TextView) convertView.findViewById(R.id.txtNameMarketplace);
             viewHolder.txtPriceMarketplace = (TextView) convertView.findViewById(R.id.txtPriceMarketplace);
             viewHolder.imgMarketplace = (ImageView) convertView.findViewById(R.id.imgMarketplace);
+            viewHolder.checkboxSeries = (CheckBox) convertView.findViewById(R.id.checkboxSeries);
             convertView.setTag(viewHolder);
         }
 
@@ -42,6 +44,7 @@ public class MarketplaceItemAdapter extends ArrayAdapter<MarketplaceItem> {
 
         viewHolder.txtNameMarketplace.setText(marketplaceItem.getName());
         viewHolder.txtPriceMarketplace.setText(marketplaceItem.getPrice());
+        viewHolder.checkboxSeries.setChecked(marketplaceItem.getCheckedValue());
 
         new DownloadImageFromInternet(viewHolder.imgMarketplace)
                 .execute(marketplaceItem.getImageUrl());
@@ -53,6 +56,7 @@ public class MarketplaceItemAdapter extends ArrayAdapter<MarketplaceItem> {
         public TextView txtNameMarketplace;
         public TextView txtPriceMarketplace;
         public ImageView imgMarketplace;
+        public CheckBox checkboxSeries;
     }
 
 }

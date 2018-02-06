@@ -47,11 +47,11 @@ public class CatalogItemAdapter extends ArrayAdapter<CatalogItem> {
 
         final CatalogItem catalogItem = getItem(position);
 
-        viewHolder.txtNameArticle.setText(
-                catalogItem.getBrand() + " " +
-                        catalogItem.getModel());
+        viewHolder.txtNameArticle.setText(catalogItem.getName());
 
-        viewHolder.txtAboutArticle.setText(catalogItem.getName());
+        viewHolder.txtAboutArticle.setText(
+                catalogItem.getBrand() + " " +
+                catalogItem.getModel());
 
         viewHolder.txtMinPriceArticle.setText((catalogItem.getPriceMin() != 0) ?
                 (
@@ -91,6 +91,5 @@ public class CatalogItemAdapter extends ArrayAdapter<CatalogItem> {
         public ImageView imgArticle;
         public TextView txtMinPriceArticle;
         public TextView txtMaxPriceArticle;
-
     }
 }
