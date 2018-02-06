@@ -1,4 +1,4 @@
-package fr.marketwatcher.app;
+package fr.marketwatcher.android;
 
 /**
  * Created by bapti on 31/01/2018.

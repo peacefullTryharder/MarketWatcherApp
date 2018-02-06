@@ -1,4 +1,4 @@
-package fr.marketwatcher.app;
+package fr.marketwatcher.android;
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -8,6 +8,8 @@
     <string name="logPassword">Mot de passe</string>
     <string name="logConnect">Connexion</string>
 
+    <string name="regConnect">Inscription</string>
+
     <!-- Activities -->
     <string name="home">Accueil</string>
     <string name="catalog">Catalogue</string>

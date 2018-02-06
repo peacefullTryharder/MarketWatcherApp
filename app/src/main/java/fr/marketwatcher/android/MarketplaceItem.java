@@ -1,4 +1,4 @@
-package fr.marketwatcher.app;
+package fr.marketwatcher.android;
 
 /**
  * Created by bapti on 06/02/2018.
@@ -6,7 +6,7 @@ package fr.marketwatcher.app;
 
 public class MarketplaceItem {
     private String name, price, imageUrl;
-    private boolean checkedValue = false;
+    private boolean checkedValue;
 
     MarketplaceItem(String name, String price, String imageUrl, boolean checkedValue)
     {

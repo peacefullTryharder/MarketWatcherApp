@@ -1,11 +1,9 @@
-package fr.marketwatcher.app;
+package fr.marketwatcher.android;
 
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Base64;
 import android.util.Log;
-import android.widget.AbsListView;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,19 +18,16 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
-import com.jjoe64.graphview.series.Series;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +50,7 @@ public class ArticleActivity extends BaseActivity {
     private ScrollView ScrollArticle = null;
     private CheckBox CheckboxSeries = null;
 
-    private double doublePriceMax, doublePriceMin;
+    private String MarketplaceMax, MarketplaceMin;
 
     private LinearLayout.LayoutParams ListViewParams = null;
     
@@ -68,7 +63,7 @@ public class ArticleActivity extends BaseActivity {
         final int pixels = (int) (50 * scale + 0.5f);
 
         JsonArticleURL = "http://api.marketwatcher.fr/product/" + getIntent().getStringExtra("googleId");
-        JsonGraphURL = "http://api.marketwatcher.fr/product/" + getIntent().getStringExtra("googleId") + "/graph?resolution=365";
+        JsonGraphURL = "http://api.marketwatcher.fr/product/" + getIntent().getStringExtra("googleId") + "/graph";
 
         final GraphView graph = (GraphView) findViewById(R.id.graph);
         final List<MarketplaceItem> items = new ArrayList<MarketplaceItem>();
@@ -100,10 +95,11 @@ public class ArticleActivity extends BaseActivity {
                     public void onResponse(JSONArray response) {
                         try {
                             setArticleContent(response.getJSONObject(0));
-
                             if (response.getJSONObject(0).has("history")){
-                                doublePriceMax = response.getJSONObject(0).getJSONObject("history").getDouble("max");
-                                doublePriceMin = response.getJSONObject(0).getJSONObject("history").getDouble("min");
+                                MarketplaceMax = response.getJSONObject(0).getJSONObject("history")
+                                        .getJSONObject("max").getString("marketplace");
+                                MarketplaceMin = response.getJSONObject(0).getJSONObject("history")
+                                        .getJSONObject("min").getString("marketplace");
                             }
                         }
                         // Try and catch are included to handle any errors due to JSON
@@ -144,31 +140,19 @@ public class ArticleActivity extends BaseActivity {
                         try {
                             Random rnd = new Random();
 
+                            String localMarketplaceTmp;
+
                             ArrayList<LineGraphSeries<DataPoint>> mySeries = new ArrayList<LineGraphSeries<DataPoint>>();
 
                             // To adapt the ListView size to our data set
 
                             for (int i=0; i<response.length(); i++)
                             {
-                                boolean checked = false;
 
                                 if (response.getJSONObject(i).getJSONObject("_id").has("marketplace"))
                                 {
 
-                                    /*
-                                    try
-                                    {
-                                        if (response.getJSONObject(i).getJSONArray("data")
-                                                .getJSONObject(response.getJSONObject(i).getJSONArray("data").length()-1).getDouble("price")
-                                                == doublePriceMin)
-                                        {
-                                            checked = true;
-                                        }
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        Toast.makeText(ArticleActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                                    } */
+                                    localMarketplaceTmp = response.getJSONObject(i).getJSONObject("_id").getString("marketplace");
 
                                     items.add(new MarketplaceItem(
                                             (response.getJSONObject(i).getJSONObject("_id").getString("marketplace").length() <= 10) ?
@@ -176,15 +160,15 @@ public class ArticleActivity extends BaseActivity {
                                                     : (response.getJSONObject(i).getJSONObject("_id").getString("marketplace").substring(0, 10) + ".."),
                                             response.getJSONObject(i).getJSONArray("data").getJSONObject(response.getJSONObject(i).getJSONArray("data").length()-1).getString("price"),
                                             getMarketplaceImageUrl(response.getJSONObject(i).getJSONObject("_id").getString("marketplace")),
-                                            checked));
+                                            localMarketplaceTmp.equals(MarketplaceMax) || localMarketplaceTmp.equals(MarketplaceMin)));
 
-                                    if (checked == true)
+
+                                    mySeries.add(new LineGraphSeries<>(
+                                            getDatasFromJSONArray(response.getJSONObject(i).getJSONArray("data"))));
+
+                                    if (localMarketplaceTmp.equals(MarketplaceMax) || localMarketplaceTmp.equals(MarketplaceMin))
                                     {
-                                        mySeries.add(new LineGraphSeries<>(
-                                                getDatasFromJSONArray(response.getJSONObject(i).getJSONArray("data"))));
-
                                         mySeries.get(i).setColor(Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256)));
-
                                         mySeries.get(i).setThickness(6);
                                         graph.addSeries(mySeries.get(i));
                                     }
@@ -227,7 +211,7 @@ public class ArticleActivity extends BaseActivity {
 
         requestQueue.add(graphReq);
 
-        graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+        // graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
     }
 
     @Override
@@ -241,14 +225,17 @@ public class ArticleActivity extends BaseActivity {
         List<DataPoint> values = new ArrayList<DataPoint>();
         DataPoint[] finalValues;
 
+        // k <=> new SimpleDateFormat("yyyy-MM-dd").parse(datas.getJSONObject(k).getString("date").split("T")[0])
+
         try
         {
+
             for (int k=datas.length()-365; k<datas.length(); k++)
             {
                 values.add(new DataPoint(
                         k,
                         datas.getJSONObject(k).getDouble("price")));
-           }
+            }
         }
         catch (JSONException e)
         {
@@ -284,21 +271,21 @@ public class ArticleActivity extends BaseActivity {
                             articleDatas.getString("image") : "");
 
             MinPrice.setText(((articleDatas.has("history") ?
-                    (articleDatas.getJSONObject("history").getDouble("min")) : 0) != 0) ?
+                    (articleDatas.getJSONObject("history").getJSONObject("min").getDouble("price")) : 0) != 0) ?
                     (
-                            ((Integer.parseInt(("" + articleDatas.getJSONObject("history").getDouble("min")).split("\\.")[1]) == 0) ?
-                                    ("" + articleDatas.getJSONObject("history").getDouble("min")).split("\\.")[0] :
-                                    (("" + articleDatas.getJSONObject("history").getDouble("min")).split("\\.")[0] + ","
-                                            + ("" + articleDatas.getJSONObject("history").getDouble("min")).split("\\.")[1])) + "€"
+                            ((Integer.parseInt(("" + articleDatas.getJSONObject("history").getJSONObject("min").getDouble("price")).split("\\.")[1]) == 0) ?
+                                    ("" + articleDatas.getJSONObject("history").getJSONObject("min").getDouble("price")).split("\\.")[0] :
+                                    (("" + articleDatas.getJSONObject("history").getJSONObject("min").getDouble("price")).split("\\.")[0] + ","
+                                            + ("" + articleDatas.getJSONObject("history").getJSONObject("min").getDouble("price")).split("\\.")[1])) + "€"
                     ) : "");
 
             MaxPrice.setText(((articleDatas.has("history") ?
-                    (articleDatas.getJSONObject("history").getDouble("min")) : 0) != 0) ?
+                    (articleDatas.getJSONObject("history").getJSONObject("max").getDouble("price")) : 0) != 0) ?
                     (
-                            ((Integer.parseInt(("" + articleDatas.getJSONObject("history").getDouble("max")).split("\\.")[1]) == 0) ?
-                                    ("" + articleDatas.getJSONObject("history").getDouble("max")).split("\\.")[0] :
-                                    (("" + articleDatas.getJSONObject("history").getDouble("max")).split("\\.")[0] + ","
-                                            + ("" + articleDatas.getJSONObject("history").getDouble("max")).split("\\.")[1])) + "€"
+                            ((Integer.parseInt(("" + articleDatas.getJSONObject("history").getJSONObject("max").getDouble("price")).split("\\.")[1]) == 0) ?
+                                    ("" + articleDatas.getJSONObject("history").getJSONObject("max").getDouble("price")).split("\\.")[0] :
+                                    (("" + articleDatas.getJSONObject("history").getJSONObject("max").getDouble("price")).split("\\.")[0] + ","
+                                            + ("" + articleDatas.getJSONObject("history").getJSONObject("max").getDouble("price")).split("\\.")[1])) + "€"
                     ) : "");
         }
         catch (JSONException e)

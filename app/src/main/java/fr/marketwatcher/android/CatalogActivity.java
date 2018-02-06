@@ -1,6 +1,5 @@
-package fr.marketwatcher.app;
+package fr.marketwatcher.android;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -90,9 +89,9 @@ public class CatalogActivity extends BaseActivity {
                                                 jsonObject.getString("googleId"),
                                                 jsonObject.has("brand") ? jsonObject.getString("brand") : "",
                                                 jsonObject.has("model") ? jsonObject.getString("model") : "",
-                                                jsonObject.getString("category"),
-                                                jsonObject.has("history") ? jsonObject.getJSONObject("history").getDouble("min") : 0,
-                                                jsonObject.has("history") ? jsonObject.getJSONObject("history").getDouble("max") : 0));
+                                                jsonObject.has("category") ? jsonObject.getString("category") : "",
+                                                jsonObject.has("history") ? jsonObject.getJSONObject("history").getJSONObject("min").getDouble("price") : 0,
+                                                jsonObject.has("history") ? jsonObject.getJSONObject("history").getJSONObject("max").getDouble("price") : 0));
                                     }
 
                                     CatalogItemAdapter adapter = new CatalogItemAdapter(CatalogActivity.this, items);
