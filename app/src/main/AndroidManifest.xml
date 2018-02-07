@@ -44,7 +44,7 @@
         <activity
             android:name=".ScanBarcodeActivity"
             android:label="Scanner un QRCode" />
-
+      
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />

@@ -1,6 +1,8 @@
 package fr.marketwatcher.android;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -107,5 +109,29 @@ public abstract class BaseActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public String getToken()
+    {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String token = null;
+        if (preferences.contains("token")) {
+            token = preferences.getString("token", "");
+        }
+        return token;
+    }
+
+    public void deleteToken()
+    {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.apply();
+    }
+
+    public void redirectionToLogin() {
+        Intent HomeIntent;
+        HomeIntent = new Intent(this, MainActivity.class);
+        startActivity(HomeIntent);
     }
 }
