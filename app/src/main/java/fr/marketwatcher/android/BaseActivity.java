@@ -20,6 +20,7 @@ public abstract class BaseActivity extends AppCompatActivity
     public Intent LoginActivity;
     public Intent CatalogActivity;
     public Intent BarcodeResultActivity;
+    public Intent DealsActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +85,9 @@ public abstract class BaseActivity extends AppCompatActivity
             startActivity(CatalogActivity);
 
         } else if (id == R.id.nav_deals) {
+
+            DealsActivity = new Intent(getApplicationContext(), DealsActivity.class);
+            startActivity(DealsActivity);
 
         } else if (id == R.id.nav_add) {
 

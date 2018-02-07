@@ -16,6 +16,7 @@
     <!-- Activities -->
     <string name="home">Accueil</string>
     <string name="catalog">Catalogue</string>
+    <string name="deals">Deals</string>
 
 
     <string name="action_settings">Settings</string>

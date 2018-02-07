@@ -27,12 +27,13 @@
             </intent-filter>
         </activity>
         <activity android:name="fr.marketwatcher.android.CatalogActivity" />
+        <activity android:name="fr.marketwatcher.android.DealsActivity" />
         <activity android:name="fr.marketwatcher.android.ArticleActivity" />
-        <activity android:name=".BarcodeResultActivity"
-            android:label="Barcode Reader">
+        <activity android:name="fr.marketwatcher.android.BarcodeResultActivity"
+            android:label="Ajout">
         </activity>
-        <activity android:name=".ScanBarcodeActivity"
-            android:label="Scan Barcode"></activity>
+        <activity android:name="fr.marketwatcher.android.ScanBarcodeActivity"
+            android:label="Scanner un QRCode"></activity>
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />

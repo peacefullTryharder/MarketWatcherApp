@@ -83,10 +83,10 @@ public class CatalogActivity extends BaseActivity {
                                         jsonObject = response.getJSONObject(i);
 
                                         items.add(new CatalogItem(
-                                                jsonObject.getString("name"),
+                                                jsonObject.has("name") ? jsonObject.getString("name") : "",
                                                 jsonObject.has("image") ? jsonObject.getString("image") : "",
-                                                jsonObject.getString("insertedAt"),
-                                                jsonObject.getString("googleId"),
+                                                jsonObject.has("insertedAt") ? jsonObject.getString("insertedAt") : "",
+                                                jsonObject.has("googleId") ? jsonObject.getString("googleId") : "",
                                                 jsonObject.has("brand") ? jsonObject.getString("brand") : "",
                                                 jsonObject.has("model") ? jsonObject.getString("model") : "",
                                                 jsonObject.has("category") ? jsonObject.getString("category") : "",

@@ -27,7 +27,7 @@ import java.net.URL;
 import java.util.regex.Pattern;
 
 /**
- * Created by bapti on 07/02/2018.
+ * Created by slipb on 04/02/2018.
  */
 
 public class BarcodeResultActivity extends BaseActivity {
@@ -47,6 +47,13 @@ public class BarcodeResultActivity extends BaseActivity {
 
         gtinView.addTextChangedListener(textWatcher);
         addProductView.setOnClickListener(addProductListener);
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_DENIED)
+        {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, 1);
+
+        }
 
     }
 

@@ -39,6 +39,7 @@
             android:text="Prix"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="24sp"
+            android:textStyle="bold"
             android:layout_above="@+id/txtMaxPriceArticle"
             android:layout_alignParentEnd="true" />
 

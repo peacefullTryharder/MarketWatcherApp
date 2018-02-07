@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="90dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:background="#FFFFFF">
+
+        <ImageView
+            android:id="@+id/imgDeal"
+            android:layout_width="90dp"
+            android:layout_height="80dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:id="@+id/txtNameDeal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:text="Titre"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/imgDeal" />
+
+        <TextView
+            android:id="@+id/txtAboutDeal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtNameDeal"
+            android:layout_toEndOf="@+id/imgDeal"
+            android:text="Description"
+            android:textSize="11sp" />
+
+
+    <TextView
+        android:id="@+id/txtPriceDeal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="center"
+        android:text="Price"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24dp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="5dp"
+        android:background="@drawable/ic_menu_deals"
+        android:backgroundTint="@color/colorPrimary"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/txtPriceDeal" />
+
+</RelativeLayout>
