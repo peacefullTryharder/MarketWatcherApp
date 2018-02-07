@@ -32,7 +32,7 @@
         <activity android:name="fr.marketwatcher.android.BarcodeResultActivity"
             android:label="Ajout">
         </activity>
-        <activity android:name="fr.marketwatcher.android.ScanBarcodeActivity"
+        <activity android:name=".ScanBarcodeActivity"
             android:label="Scanner un QRCode"></activity>
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"

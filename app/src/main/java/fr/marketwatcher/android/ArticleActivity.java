@@ -183,6 +183,8 @@ public class ArticleActivity extends BaseActivity {
 
                             MarketPlacesView.setAdapter(adapter);
 
+                            ScrollArticle.smoothScrollTo(0,0);
+
                         }
                         // Try and catch are included to handle any errors due to JSON
                         catch (JSONException e) {
@@ -217,7 +219,6 @@ public class ArticleActivity extends BaseActivity {
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        ScrollArticle.fullScroll(ScrollView.FOCUS_UP);
     }
 
     public DataPoint[] getDatasFromJSONArray(JSONArray datas)
