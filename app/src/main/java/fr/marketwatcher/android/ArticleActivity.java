@@ -1,5 +1,6 @@
 package fr.marketwatcher.android;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -59,6 +61,17 @@ public class ArticleActivity extends BaseActivity {
     private ListView MarketPlacesView = null;
     private ScrollView ScrollArticle = null;
     private GraphView graph = null;
+    private ImageButton mShareView = null;
+
+    private String productName = null;
+    private String productBrand = null;
+    private String productModel = null;
+    private String productAuthor = null;
+    private String productPriceMax = null;
+    private String productPriceMin = null;
+    private String productPrediction = null;
+    private String nameUser = null;
+
 
     private ArrayList<LineGraphSeries<DataPoint>> mySeries = new ArrayList<LineGraphSeries<DataPoint>>();
 
@@ -101,6 +114,13 @@ public class ArticleActivity extends BaseActivity {
         Brand = (TextView) findViewById(R.id.txtBrandArticleActivity);
         MinPrice = (TextView) findViewById(R.id.txtMinPriceArticleActivity);
         MaxPrice = (TextView) findViewById(R.id.txtMaxPriceArticleActivity);
+<<<<<<< HEAD
+=======
+        mShareView = (ImageButton) findViewById(R.id.share);
+
+        CheckboxSeries = (CheckBox) findViewById(R.id.checkboxSeries);
+
+>>>>>>> f6cb0638f44033a88340d31f28a1d1efa256c1f0
         ArticleImage = (ImageView) findViewById(R.id.imgArticleOnConsultation);
 
         MarketPlacesView = (ListView) findViewById(R.id.listArticle);
@@ -108,6 +128,8 @@ public class ArticleActivity extends BaseActivity {
         requestQueue = Volley.newRequestQueue(getApplicationContext());
 
         mainArticleInfo = findViewById(R.id.articleMainInfo);
+
+        mShareView.setOnClickListener(shareListener);
 
         // hide some views before they are loaded
         mainArticleInfo.setVisibility(View.GONE);
@@ -350,6 +372,8 @@ public class ArticleActivity extends BaseActivity {
 
         view.setText(text);
 
+        productPrediction = view.getText().toString();
+
         if (forecasts.size() > 0) {
             view.setVisibility(View.VISIBLE);
         }
@@ -423,6 +447,18 @@ public class ArticleActivity extends BaseActivity {
             Brand.setText(articleDatas.has("brand") ?
                     articleDatas.getString("brand") : "");
 
+            productName = articleDatas.has("name") ?
+                    articleDatas.getString("name") : "";
+
+            productBrand = articleDatas.has("brand") ?
+                    articleDatas.getString("brand") : "" ;
+
+            productModel = articleDatas.has("model") ?
+                    articleDatas.getString("model") : "" ;
+
+            productAuthor = articleDatas.has("author") ?
+                    articleDatas.getString("author") : "" ;
+
             new DownloadImageFromInternet(ArticleImage)
                     .execute(articleDatas.has("image") ?
                             articleDatas.getString("image") : "");
@@ -444,6 +480,10 @@ public class ArticleActivity extends BaseActivity {
                                     (("" + articleDatas.getJSONObject("history").getJSONObject("max").getDouble("price")).split("\\.")[0] + ","
                                             + ("" + articleDatas.getJSONObject("history").getJSONObject("max").getDouble("price")).split("\\.")[1])) + "€"
                     ) : "");
+
+            productPriceMin = MinPrice.getText().toString();
+
+            productPriceMax = MaxPrice.getText().toString();
 
             mainArticleInfo.setVisibility(View.VISIBLE);
         } catch (JSONException e) {
@@ -495,4 +535,72 @@ public class ArticleActivity extends BaseActivity {
             }
         }
     }
+
+    public void sendMailBook() {
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("message/rfc822");
+        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{""});
+        i.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        i.putExtra(Intent.EXTRA_SUBJECT, "Un utilisateur de MarketWatcher vous partage un article  ");
+        i.putExtra(Intent.EXTRA_TEXT   , "Bonjour,\n" +
+                "\n" +
+                nameUser +" pense que cet article sur Marketwatcher pourrait vous intéresser : \n\n" +
+                productName+" - "+productAuthor+"\n" +
+                "\n" +
+                "Actuellement son prix minimal est de "+productPriceMin+" sur "+MarketplaceMin+" et son prix maximal est de "+productPriceMax+" sur "+MarketplaceMax+".\n" +
+                "\n" +
+                (productPrediction != null ? productPrediction : "")+"\n\n"+
+                "Merci de votre confiance et à bientôt,\n" +
+                "\n" +
+                "L'équipe Marketwatcher\n\n" +
+                "Site : https://www.marketwatcher.fr/\n" +
+                "Application : https://play.google.com/store/apps/details?id=fr.marketwatcher.android");
+        try {
+            startActivity(Intent.createChooser(i, "Envoi de l'email..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(ArticleActivity.this, "Il n'y a pas de clients mail installé", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void sendMailOther() {
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("message/rfc822");
+        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{""});
+        i.putExtra(Intent.EXTRA_SUBJECT, "Un utilisateur de MarketWatcher vous partage un article  ");
+        i.putExtra(Intent.EXTRA_TEXT   , "Bonjour,\n" +
+                "\n" +
+                nameUser+" pense que cet article sur Marketwatcher pourrait vous intéresser : \n\n" +
+                productName+" - "+productBrand+" - "+productModel+"\n" +
+                "\n" +
+                "Actuellement son prix minimal est de "+productPriceMin+" sur "+MarketplaceMin+" et son prix maximal est de "+productPriceMax+" sur "+MarketplaceMax+".\n" +
+                "\n" +
+                (productPrediction != null ? productPrediction : "")+"\n"+
+                "Merci de votre confiance et à bientôt,\n" +
+                "\n" +
+                "L'équipe Marketwatcher\n\n" +
+                "Site : https://www.marketwatcher.fr/\n"+
+                "Application : https://play.google.com/store/apps/details?id=fr.marketwatcher.android");
+        try {
+            startActivity(Intent.createChooser(i, "Envoi de l'email..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(ArticleActivity.this, "Il n'y a pas de clients mail installé", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public View.OnClickListener shareListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            try {
+                nameUser = nameUser != null ? nameUser : "Un utilisateur";
+                if(productAuthor.isEmpty()) {
+                    sendMailOther();
+                } else {
+                    sendMailBook();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
 }
