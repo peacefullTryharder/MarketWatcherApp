@@ -62,7 +62,7 @@ public class CatalogActivity extends BaseActivity {
 
                 requestQueue = Volley.newRequestQueue(getApplicationContext());
 
-                JsonURL = "http://api.marketwatcher.fr/product/search?term=" + catalogSearch.getText().toString();
+                JsonURL = BaseActivity.API_URL + "/product/search?term=" + catalogSearch.getText().toString();
 
                 JsonArrayRequest arrayReq = new JsonArrayRequest(Request.Method.GET, JsonURL,
                         // The third parameter Listener overrides the method onResponse() and passes

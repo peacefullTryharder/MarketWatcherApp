@@ -50,6 +50,9 @@ public class ArticleActivity extends BaseActivity {
     private ListView MarketPlacesView = null;
     private ScrollView ScrollArticle = null;
     private CheckBox CheckboxSeries = null;
+    private GraphView graph = null;
+
+    private ArrayList<LineGraphSeries<DataPoint>> mySeries = new ArrayList<LineGraphSeries<DataPoint>>();
 
     private String MarketplaceMax, MarketplaceMin;
 
@@ -63,10 +66,10 @@ public class ArticleActivity extends BaseActivity {
         final float scale = getApplicationContext().getResources().getDisplayMetrics().density;
         final int pixels = (int) (50 * scale + 0.5f);
 
-        JsonArticleURL = "http://api.marketwatcher.fr/product/" + getIntent().getStringExtra("googleId");
-        JsonGraphURL = "http://api.marketwatcher.fr/product/" + getIntent().getStringExtra("googleId") + "/graph";
+        JsonArticleURL = BaseActivity.API_URL + "/product/" + getIntent().getStringExtra("googleId");
+        JsonGraphURL = BaseActivity.API_URL +"/product/" + getIntent().getStringExtra("googleId") + "/graph";
 
-        final GraphView graph = (GraphView) findViewById(R.id.graph);
+        graph = (GraphView) findViewById(R.id.graph);
         final List<MarketplaceItem> items = new ArrayList<MarketplaceItem>();
 
         ScrollArticle = (ScrollView) findViewById(R.id.scrollArticle);
@@ -128,8 +131,6 @@ public class ArticleActivity extends BaseActivity {
         };
 
         requestQueue.add(arrayReq);
-
-        final ArrayList<LineGraphSeries<DataPoint>> mySeries = new ArrayList<LineGraphSeries<DataPoint>>();
 
         JsonArrayRequest graphReq = new JsonArrayRequest(Request.Method.GET, JsonGraphURL,
                 // The third parameter Listener overrides the method onResponse() and passes
@@ -330,14 +331,15 @@ public class ArticleActivity extends BaseActivity {
     }
 
     public void checkedMarketplaceHandler(View v) {
-        int position;
+        CheckBox checkBox = (CheckBox) v;
 
         for (int i=0; i < MarketPlacesView.getChildCount(); i++)
         {
             if (MarketPlacesView.getChildAt(i) == v.getParent())
             {
-                position = i;
+                if (checkBox.isChecked()) graph.addSeries(mySeries.get(i));
+                else graph.removeSeries(mySeries.get(i));
             }
-        } // In completion
+        }
     }
 }
