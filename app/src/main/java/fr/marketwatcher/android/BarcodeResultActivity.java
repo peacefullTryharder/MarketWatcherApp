@@ -111,6 +111,8 @@ public class BarcodeResultActivity extends BaseActivity {
 
                     if(successAddProduct) {
                         Toast.makeText(getApplicationContext(),"Votre produit a bien été enregistré.",Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(BarcodeResultActivity.this, CatalogActivity.class);
+                        startActivity(i);
                     } else {
                         Toast.makeText(getApplicationContext(),"Désolé, nous ne pouvaons accéder à votre requête.",Toast.LENGTH_SHORT).show();
                     }
