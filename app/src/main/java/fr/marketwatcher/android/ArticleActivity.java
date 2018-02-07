@@ -58,7 +58,6 @@ public class ArticleActivity extends BaseActivity {
     private ImageView ArticleImage = null;
     private ListView MarketPlacesView = null;
     private ScrollView ScrollArticle = null;
-    private CheckBox CheckboxSeries = null;
     private GraphView graph = null;
 
     private ArrayList<LineGraphSeries<DataPoint>> mySeries = new ArrayList<LineGraphSeries<DataPoint>>();
@@ -102,9 +101,6 @@ public class ArticleActivity extends BaseActivity {
         Brand = (TextView) findViewById(R.id.txtBrandArticleActivity);
         MinPrice = (TextView) findViewById(R.id.txtMinPriceArticleActivity);
         MaxPrice = (TextView) findViewById(R.id.txtMaxPriceArticleActivity);
-
-        CheckboxSeries = (CheckBox) findViewById(R.id.checkboxSeries);
-
         ArticleImage = (ImageView) findViewById(R.id.imgArticleOnConsultation);
 
         MarketPlacesView = (ListView) findViewById(R.id.listArticle);
@@ -231,6 +227,17 @@ public class ArticleActivity extends BaseActivity {
                                         mySeries.get(i).setThickness(6);
                                         graph.addSeries(mySeries.get(i));
                                     }
+
+                                    /*
+
+                                    graph.getViewport().setMinY(2000);
+                                    graph.getViewport().setMaxY(4000);
+
+                                    graph.getViewport().setMinX(0);
+                                    graph.getViewport().setMaxX(2000);
+
+                                    graph.getViewport().setYAxisBoundsManual(true);
+                                    graph.getViewport().setXAxisBoundsManual(true); */
 
                                 }
                             }
@@ -376,21 +383,23 @@ public class ArticleActivity extends BaseActivity {
     public DataPoint[] getDatasFromJSONArray(JSONArray datas) {
         List<DataPoint> values = new ArrayList<DataPoint>();
         DataPoint[] finalValues;
+        Double tmpX;
 
         // k <=> new SimpleDateFormat("yyyy-MM-dd").parse(datas.getJSONObject(k).getString("date").split("T")[0])
 
-        try {
-
-
             for (int k = 0; k < datas.length(); k++) {
-                values.add(new DataPoint(
-                        k,
-                        datas.getJSONObject(k).getDouble("price")));
+                try {
+                        tmpX = datas.getJSONObject(k).getDouble("price");
+                    values.add(new DataPoint(
+                            k,
+                            tmpX));
+                }
+                catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
             }
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
         finalValues = new DataPoint[values.size()];
         finalValues = values.toArray(finalValues);
@@ -474,9 +483,12 @@ public class ArticleActivity extends BaseActivity {
 
     public void checkedMarketplaceHandler(View v) {
         CheckBox checkBox = (CheckBox) v;
+        Random rnd = new Random();
 
         for (int i = 0; i < MarketPlacesView.getChildCount(); i++) {
             if (MarketPlacesView.getChildAt(i) == v.getParent()) {
+                mySeries.get(i).setColor(Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256)));
+                mySeries.get(i).setThickness(6);
 
                 if (checkBox.isChecked()) graph.addSeries(mySeries.get(i));
                 else graph.removeSeries(mySeries.get(i));
