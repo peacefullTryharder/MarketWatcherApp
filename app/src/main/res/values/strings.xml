@@ -7,7 +7,10 @@
     <string name="logEmail">Adresse e-mail</string>
     <string name="logPassword">Mot de passe</string>
     <string name="logConnect">Connexion</string>
-
+    <string name="logName">Nom et prénom</string>
+    <string name="barcodeScan">Scanner un code-barre</string>
+    <string name="gtin">Renseigner le GTIN / code-barre</string>
+    <string name="addProduct">Ajouter un produit</string>
     <string name="regConnect">Inscription</string>
 
     <!-- Activities -->

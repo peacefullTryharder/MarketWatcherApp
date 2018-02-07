@@ -19,7 +19,7 @@ public abstract class BaseActivity extends AppCompatActivity
     public Intent MainActivity;
     public Intent LoginActivity;
     public Intent CatalogActivity;
-    public Intent ArticleActivity;
+    public Intent BarcodeResultActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,8 +87,8 @@ public abstract class BaseActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_add) {
 
-            ArticleActivity = new Intent(getApplicationContext(), ArticleActivity.class);
-            startActivity(ArticleActivity);
+            BarcodeResultActivity = new Intent(getApplicationContext(), BarcodeResultActivity.class);
+            startActivity(BarcodeResultActivity);
 
         } else if (id == R.id.nav_contact) {
 

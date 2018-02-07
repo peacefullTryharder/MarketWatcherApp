@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#5CBD61"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="25dp"
+    android:weightSum="1">
+
+    <EditText
+        android:id="@+id/gtinField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:hint="@string/gtin"
+        android:inputType="text"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#A9EAAC" />
+
+    <Button
+        android:id="@+id/addProduct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="22dp"
+        android:textColor="#FFFFFF"
+        android:text="@string/addProduct"
+        android:fontFamily="sans-serif-regular"
+        android:background="@null"
+        android:textAllCaps="false" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/barcodeScan"
+        android:onClick="scanBarcode"
+        android:id="@+id/scan_barcode"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:textSize="22dp"
+        android:textColor="#FFFFFF"
+        android:fontFamily="sans-serif-regular"
+        android:background="@null"
+        android:textAllCaps="false"
+        />
+
+    <TextView android:text=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/barcode_result"/>
+
+</LinearLayout>
