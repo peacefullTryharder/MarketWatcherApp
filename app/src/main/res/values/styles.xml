@@ -24,19 +24,21 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="LoginTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="LoginTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimary</item>
+        <item name="android:colorAccent">#fff</item>
+        <!--<item name="colorControlNormal">#aaaaaa</item>-->
+        <!--<item name="colorControlActivated">#FFFFFF</item>-->
+        <!--<item name="colorControlHighlight">#FFFFFF</item>-->
 
-        <item name="colorControlNormal">#A9EAAC</item>
-        <item name="colorControlActivated">#FFFFFF</item>
-        <item name="colorControlHighlight">#FFFFFF</item>
-
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColorPrimary">@color/textColorPrimary</item>
-        <item name="android:navigationBarColor">@color/navigationBarControl</item>
-        <item name="android:windowBackground">@color/loginWindowBackground</item>
-
+        <!--<item name="colorPrimary">@color/colorPrimary</item>-->
+        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+        <!--<item name="colorAccent">@color/colorAccent</item>-->
+        <!--<item name="android:textColorPrimary">@color/textColorPrimary</item>-->
+        <!--<item name="android:navigationBarColor">@color/navigationBarControl</item>-->
+        <!--<item name="android:windowBackground">@color/loginWindowBackground</item>-->
     </style>
 
+    <!--<style name="RegisterTheme" parent="LoginTheme" />-->
 </resources>

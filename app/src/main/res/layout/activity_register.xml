@@ -8,51 +8,46 @@
     android:padding="25dp"
     android:weightSum="1">
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="20sp"
-        android:adjustViewBounds="true"
-        android:contentDescription="@string/mLogImageAlt"
-        android:cropToPadding="false"
-        android:src="@drawable/market_logo_blanc" />
-
-    <AutoCompleteTextView
-        android:id="@+id/logEmail"
+    <EditText
+        android:id="@+id/regName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:hint="@string/regName"
+        android:inputType="text"
+        android:textAppearance="@android:style/TextAppearance.Material.Small.Inverse"
+        android:textColor="#fff"
+        android:textColorHint="#aaa" />
+
+    <AutoCompleteTextView
+        android:id="@+id/regEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
         android:hint="@string/logEmail"
         android:inputType="textEmailAddress"
         android:textAppearance="@android:style/TextAppearance.Material.Small.Inverse"
-        android:textColorHint="#AAAAAA" />
+        android:textColor="#fff"
+        android:textColorHint="#aaa" />
 
     <EditText
-        android:id="@+id/logPassword"
+        android:id="@+id/regPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
         android:hint="@string/logPassword"
         android:inputType="textPassword"
         android:textAppearance="@android:style/TextAppearance.Material.Small.Inverse"
-        android:textColorHint="#AAAAAA" />
+        android:textColor="#fff"
+        android:textColorHint="#aaa" />
 
     <android.support.v7.widget.AppCompatButton
-        android:id="@+id/logSubmit"
+        android:id="@+id/regSubmit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#ffffff"
-        android:text="@string/logConnect"
+        android:text="@string/regConnect"
         android:textColor="#000" />
 
-    <TextView
-        android:id="@+id/logRegisterLink"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:text="@string/logRegisterLink"
-        android:textAppearance="@android:style/TextAppearance.Material.Small"
-        android:textColor="#fff" />
 </LinearLayout>
 
