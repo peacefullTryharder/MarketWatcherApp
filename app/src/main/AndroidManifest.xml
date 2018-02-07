@@ -14,11 +14,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+
         <activity
-            android:name="fr.marketwatcher.android.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name" />
+
         <activity
-            android:name="fr.marketwatcher.android.LoginActivity"
+            android:name=".LoginActivity"
             android:theme="@style/LoginTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,17 +28,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="fr.marketwatcher.android.CatalogActivity" />
-        <activity android:name="fr.marketwatcher.android.DealsActivity" />
-        <activity android:name="fr.marketwatcher.android.ArticleActivity" />
-        <activity android:name="fr.marketwatcher.android.BarcodeResultActivity"
-            android:label="Ajout">
-        </activity>
-        <activity android:name=".ScanBarcodeActivity"
-            android:label="Scanner un QRCode"></activity>
+
+        <activity
+            android:name=".RegisterActivity"
+            android:theme="@style/LoginTheme" />
+
+        <activity android:name=".CatalogActivity" />
+        <activity android:name=".DealsActivity" />
+        <activity android:name=".ArticleActivity" />
+
+        <activity
+            android:name=".BarcodeResultActivity"
+            android:label="Ajout" />
+
+        <activity
+            android:name=".ScanBarcodeActivity"
+            android:label="Scanner un QRCode" />
+      
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
+
     </application>
 
 </manifest>
