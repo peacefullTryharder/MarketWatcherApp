@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.util.ArrayMap;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -52,6 +53,9 @@ public class ArticleActivity extends BaseActivity {
     private ListView MarketPlacesView = null;
     private ScrollView ScrollArticle = null;
     private CheckBox CheckboxSeries = null;
+    private GraphView graph = null;
+
+    private ArrayList<LineGraphSeries<DataPoint>> mySeries = new ArrayList<LineGraphSeries<DataPoint>>();
 
     private String MarketplaceMax, MarketplaceMin;
 
@@ -65,11 +69,11 @@ public class ArticleActivity extends BaseActivity {
         final float scale = getApplicationContext().getResources().getDisplayMetrics().density;
         final int pixels = (int) (50 * scale + 0.5f);
 
-        JsonArticleURL = "http://api.marketwatcher.fr/product/" + getIntent().getStringExtra("googleId");
-        JsonGraphURL = "http://api.marketwatcher.fr/product/" + getIntent().getStringExtra("googleId") + "/graph";
+        JsonArticleURL = BaseActivity.API_URL + "/product/" + getIntent().getStringExtra("googleId");
+        JsonGraphURL = BaseActivity.API_URL +"/product/" + getIntent().getStringExtra("googleId") + "/graph";
         String jsonPredictionURL = BaseActivity.API_URL + "/product/" + getIntent().getStringExtra("googleId") + "/prediction";
 
-        final GraphView graph = (GraphView) findViewById(R.id.graph);
+        graph = (GraphView) findViewById(R.id.graph);
         final List<MarketplaceItem> items = new ArrayList<MarketplaceItem>();
 
         ScrollArticle = (ScrollView) findViewById(R.id.scrollArticle);
@@ -185,15 +189,17 @@ public class ArticleActivity extends BaseActivity {
                                             getMarketplaceImageUrl(response.getJSONObject(i).getJSONObject("_id").getString("marketplace")),
                                             localMarketplaceTmp.equals(MarketplaceMax) || localMarketplaceTmp.equals(MarketplaceMin)));
 
-
                                     mySeries.add(new LineGraphSeries<>(
                                             getDatasFromJSONArray(response.getJSONObject(i).getJSONArray("data"))));
 
-                                    if (localMarketplaceTmp.equals(MarketplaceMax) || localMarketplaceTmp.equals(MarketplaceMin)) {
+                                    // To display default series (min & max)
+                                    if (localMarketplaceTmp.equals(MarketplaceMax) || localMarketplaceTmp.equals(MarketplaceMin))
+                                    {
                                         mySeries.get(i).setColor(Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256)));
                                         mySeries.get(i).setThickness(6);
                                         graph.addSeries(mySeries.get(i));
                                     }
+
                                 }
                             }
 
@@ -420,5 +426,18 @@ public class ArticleActivity extends BaseActivity {
 
     interface MarketplaceBooleanChangedListener {
         public void OnBooleanChanged();
+    }
+
+    public void checkedMarketplaceHandler(View v) {
+        CheckBox checkBox = (CheckBox) v;
+
+        for (int i=0; i < MarketPlacesView.getChildCount(); i++)
+        {
+            if (MarketPlacesView.getChildAt(i) == v.getParent())
+            {
+                if (checkBox.isChecked()) graph.addSeries(mySeries.get(i));
+                else graph.removeSeries(mySeries.get(i));
+            }
+        }
     }
 }
