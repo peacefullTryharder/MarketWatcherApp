@@ -3,7 +3,9 @@ package fr.marketwatcher.android;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.ArrayMap;
 import android.util.Log;
+import android.util.SparseArray;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,6 +20,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
@@ -53,7 +56,7 @@ public class ArticleActivity extends BaseActivity {
     private String MarketplaceMax, MarketplaceMin;
 
     private LinearLayout.LayoutParams ListViewParams = null;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +67,7 @@ public class ArticleActivity extends BaseActivity {
 
         JsonArticleURL = "http://api.marketwatcher.fr/product/" + getIntent().getStringExtra("googleId");
         JsonGraphURL = "http://api.marketwatcher.fr/product/" + getIntent().getStringExtra("googleId") + "/graph";
+        String jsonPredictionURL = BaseActivity.API_URL + "/product/" + getIntent().getStringExtra("googleId") + "/prediction";
 
         final GraphView graph = (GraphView) findViewById(R.id.graph);
         final List<MarketplaceItem> items = new ArrayList<MarketplaceItem>();
@@ -95,7 +99,7 @@ public class ArticleActivity extends BaseActivity {
                     public void onResponse(JSONArray response) {
                         try {
                             setArticleContent(response.getJSONObject(0));
-                            if (response.getJSONObject(0).has("history")){
+                            if (response.getJSONObject(0).has("history")) {
                                 MarketplaceMax = response.getJSONObject(0).getJSONObject("history")
                                         .getJSONObject("max").getString("marketplace");
                                 MarketplaceMin = response.getJSONObject(0).getJSONObject("history")
@@ -128,7 +132,29 @@ public class ArticleActivity extends BaseActivity {
 
         requestQueue.add(arrayReq);
 
-        final ArrayList<LineGraphSeries<DataPoint>> mySeries = new ArrayList<LineGraphSeries<DataPoint>>();
+        final ArrayList<LineGraphSeries<DataPoint>> mySeries = new ArrayList<>();
+
+        JsonObjectRequest predictionReq = new JsonObjectRequest(Request.Method.GET, jsonPredictionURL,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            displayPredictions(response);
+                        } catch (JSONException e) {
+                            Log.e("mwArticle", "Encountered a JSONException while parsing forecast: " + e.getMessage());
+                        }
+                    }
+                },
+                // The final parameter overrides the method onErrorResponse() and passes VolleyError
+                //as a parameter
+                new Response.ErrorListener() {
+                    @Override
+                    // Handles errors that occur due to Volley
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("mwArticle", error.toString());
+                    }
+                });
+        requestQueue.add(predictionReq);
 
         JsonArrayRequest graphReq = new JsonArrayRequest(Request.Method.GET, JsonGraphURL,
                 // The third parameter Listener overrides the method onResponse() and passes
@@ -145,11 +171,9 @@ public class ArticleActivity extends BaseActivity {
 
                             // To adapt the ListView size to our data set
 
-                            for (int i=0; i<response.length(); i++)
-                            {
+                            for (int i = 0; i < response.length(); i++) {
 
-                                if (response.getJSONObject(i).getJSONObject("_id").has("marketplace"))
-                                {
+                                if (response.getJSONObject(i).getJSONObject("_id").has("marketplace")) {
 
                                     localMarketplaceTmp = response.getJSONObject(i).getJSONObject("_id").getString("marketplace");
 
@@ -157,7 +181,7 @@ public class ArticleActivity extends BaseActivity {
                                             (response.getJSONObject(i).getJSONObject("_id").getString("marketplace").length() <= 10) ?
                                                     response.getJSONObject(i).getJSONObject("_id").getString("marketplace")
                                                     : (response.getJSONObject(i).getJSONObject("_id").getString("marketplace").substring(0, 10) + ".."),
-                                            response.getJSONObject(i).getJSONArray("data").getJSONObject(response.getJSONObject(i).getJSONArray("data").length()-1).getString("price"),
+                                            response.getJSONObject(i).getJSONArray("data").getJSONObject(response.getJSONObject(i).getJSONArray("data").length() - 1).getString("price"),
                                             getMarketplaceImageUrl(response.getJSONObject(i).getJSONObject("_id").getString("marketplace")),
                                             localMarketplaceTmp.equals(MarketplaceMax) || localMarketplaceTmp.equals(MarketplaceMin)));
 
@@ -165,8 +189,7 @@ public class ArticleActivity extends BaseActivity {
                                     mySeries.add(new LineGraphSeries<>(
                                             getDatasFromJSONArray(response.getJSONObject(i).getJSONArray("data"))));
 
-                                    if (localMarketplaceTmp.equals(MarketplaceMax) || localMarketplaceTmp.equals(MarketplaceMin))
-                                    {
+                                    if (localMarketplaceTmp.equals(MarketplaceMax) || localMarketplaceTmp.equals(MarketplaceMin)) {
                                         mySeries.get(i).setColor(Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256)));
                                         mySeries.get(i).setThickness(6);
                                         graph.addSeries(mySeries.get(i));
@@ -182,7 +205,7 @@ public class ArticleActivity extends BaseActivity {
 
                             MarketPlacesView.setAdapter(adapter);
 
-                            ScrollArticle.smoothScrollTo(0,0);
+                            ScrollArticle.smoothScrollTo(0, 0);
 
                         }
                         // Try and catch are included to handle any errors due to JSON
@@ -215,30 +238,105 @@ public class ArticleActivity extends BaseActivity {
         graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
     }
 
+    public void displayPredictions(JSONObject response) throws JSONException {
+        SparseArray<Object> forecasts = new SparseArray<>();
+
+        JSONArray regressions = response.getJSONArray("regression");
+
+        JSONObject linearRegression = null, polynomialRegression = null;
+
+        for (int i = 0; i < regressions.length(); i++) {
+            JSONObject regression = regressions.getJSONObject(i);
+
+            if (regression.getString("type").equals("linear")) {
+                linearRegression = regression;
+            } else if (regression.getString("type").equals("polynomial")) {
+                polynomialRegression = regression;
+            }
+        }
+
+        // 5 day forecast is the linear regression
+        if (linearRegression != null) {
+            forecasts.put(5, linearRegression.getDouble("intercept"));
+        }
+
+        // The other two are computed using the polynomial regression
+        if (polynomialRegression != null) {
+            JSONArray paramsArray = polynomialRegression.getJSONArray("coefs");
+
+            double intercept = polynomialRegression.getDouble("intercept");
+            double[] params = new double[paramsArray.length()];
+            for (int i = 0; i < paramsArray.length(); i++) {
+                params[i] = paramsArray.getDouble(i);
+            }
+
+            forecasts.put(42, (int) Math.floor(intercept + polynomial(params, 42)));
+            forecasts.put(90, (int) Math.floor(intercept + polynomial(params, 90)));
+        }
+
+        TextView view = (TextView) findViewById(R.id.articleForecast);
+
+        // fixme: use string builder and i18n
+        String text = "Prédiction du prix pour les jours à venir : \n";
+
+        if (forecasts.get(5) != null) {
+            text += "· d'ici 5 jours : " + forecasts.get(5) + " €\n";
+        }
+        if (forecasts.get(42) != null) {
+            text += "· dans 42 jours : " + forecasts.get(42) + " €\n";
+        }
+        if (forecasts.get(90) != null) {
+            text += "· dans 3 mois : " + forecasts.get(90) + " €\n";
+        }
+
+        view.setText(text);
+
+        Log.i("mwArticle", "Computed : " + forecasts.toString());
+    }
+
+    /**
+     * Computes a polynomial - efficiently! (Horner's algorithm)
+     * Based on https://stackoverflow.com/a/39232499
+     *
+     * @param x x
+     * @return y
+     */
+    private double polynomial(double[] params, double x) {
+        double xSquared = x * x;
+        double yOdd = 0d, yEven = 0d;
+
+        int index = params.length - 1;
+        if (index % 2 == 0) {
+            yEven = params[index];
+            index -= 1;
+        }
+        for (; index >= 0; index -= 2) {
+            yOdd = params[index] + yOdd * xSquared;
+            yEven = params[index - 1] + yEven * xSquared;
+        }
+        return yEven + yOdd * x;
+    }
+
+
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
     }
 
-    public DataPoint[] getDatasFromJSONArray(JSONArray datas)
-    {
+    public DataPoint[] getDatasFromJSONArray(JSONArray datas) {
         List<DataPoint> values = new ArrayList<DataPoint>();
         DataPoint[] finalValues;
 
         // k <=> new SimpleDateFormat("yyyy-MM-dd").parse(datas.getJSONObject(k).getString("date").split("T")[0])
 
-        try
-        {
+        try {
 
-            for (int k=datas.length()-365; k<datas.length(); k++)
-            {
+            for (int k = datas.length() - 365; k < datas.length(); k++) {
                 values.add(new DataPoint(
                         k,
                         datas.getJSONObject(k).getDouble("price")));
             }
-        }
-        catch (JSONException e)
-        {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
@@ -248,10 +346,8 @@ public class ArticleActivity extends BaseActivity {
         return finalValues;
     }
 
-    public void setArticleContent(JSONObject articleDatas)
-    {
-        try
-        {
+    public void setArticleContent(JSONObject articleDatas) {
+        try {
             setTitle(articleDatas.has("name") ?
                     articleDatas.getString("name") : "");
 
@@ -287,16 +383,13 @@ public class ArticleActivity extends BaseActivity {
                                     (("" + articleDatas.getJSONObject("history").getJSONObject("max").getDouble("price")).split("\\.")[0] + ","
                                             + ("" + articleDatas.getJSONObject("history").getJSONObject("max").getDouble("price")).split("\\.")[1])) + "€"
                     ) : "");
-        }
-        catch (JSONException e)
-        {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    public String getMarketplaceImageUrl (String marketplace){
-        switch (marketplace)
-        {
+    public String getMarketplaceImageUrl(String marketplace) {
+        switch (marketplace) {
             case "Fnac":
             case "Fnac.com":
                 return "http://www.gurret.fr/wp-content/uploads/2016/09/logo-fnac-100x100.png";
