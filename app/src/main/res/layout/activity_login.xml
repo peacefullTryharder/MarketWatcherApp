@@ -27,7 +27,7 @@
         android:textAppearance="@android:style/TextAppearance.Material.Small.Inverse"
         android:textColorHint="#AAAAAA" />
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/logPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +32,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,6 +68,11 @@ public class ArticleActivity extends BaseActivity {
 
     private LinearLayout.LayoutParams ListViewParams = null;
 
+    View mainArticleInfo;
+
+    // keep track of the number of remaining requests so we can hide the spinner
+    private int remainingRequestCount = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,12 +81,21 @@ public class ArticleActivity extends BaseActivity {
         final float scale = getApplicationContext().getResources().getDisplayMetrics().density;
         final int pixels = (int) (50 * scale + 0.5f);
 
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.YEAR, -1); // to get previous year add -1
+        Date lastYearDate = cal.getTime();
+        String lastYearText = cal.get(Calendar.YEAR) + "-" + (1 + cal.get(Calendar.MONTH))
+                + "-" + (cal.get(Calendar.DAY_OF_MONTH));
+
+        Log.i("mwArticle", lastYearText);
+
         JsonArticleURL = BaseActivity.API_URL + "/product/" + getIntent().getStringExtra("googleId");
-        JsonGraphURL = BaseActivity.API_URL +"/product/" + getIntent().getStringExtra("googleId") + "/graph";
+        JsonGraphURL = BaseActivity.API_URL + "/product/" + getIntent().getStringExtra("googleId")
+                + "/graph" + "?startDate=" + lastYearText;
         String jsonPredictionURL = BaseActivity.API_URL + "/product/" + getIntent().getStringExtra("googleId") + "/prediction";
 
         graph = (GraphView) findViewById(R.id.graph);
-        final List<MarketplaceItem> items = new ArrayList<MarketplaceItem>();
+        final List<MarketplaceItem> items = new ArrayList<>();
 
         ScrollArticle = (ScrollView) findViewById(R.id.scrollArticle);
         ScrollArticle.requestDisallowInterceptTouchEvent(true);
@@ -93,6 +114,14 @@ public class ArticleActivity extends BaseActivity {
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
 
+        mainArticleInfo = findViewById(R.id.articleMainInfo);
+
+        // hide some views before they are loaded
+        mainArticleInfo.setVisibility(View.GONE);
+        graph.setVisibility(View.GONE);
+        findViewById(R.id.articleForecast).setVisibility(View.GONE);
+
+        remainingRequestCount++;
         JsonArrayRequest arrayReq = new JsonArrayRequest(Request.Method.GET, JsonArticleURL,
                 // The third parameter Listener overrides the method onResponse() and passes
                 //JSONObject as a parameter
@@ -101,6 +130,7 @@ public class ArticleActivity extends BaseActivity {
                     // Takes the response from the JSON request
                     @Override
                     public void onResponse(JSONArray response) {
+                        remainingRequestCount--;
                         try {
                             setArticleContent(response.getJSONObject(0));
                             if (response.getJSONObject(0).has("history")) {
@@ -123,6 +153,7 @@ public class ArticleActivity extends BaseActivity {
                     @Override
                     // Handles errors that occur due to Volley
                     public void onErrorResponse(VolleyError error) {
+                        remainingRequestCount--;
                         Log.e("Volley", "Error");
                     }
                 }) {
@@ -138,11 +169,13 @@ public class ArticleActivity extends BaseActivity {
 
         final ArrayList<LineGraphSeries<DataPoint>> mySeries = new ArrayList<>();
 
+        remainingRequestCount++;
         JsonObjectRequest predictionReq = new JsonObjectRequest(Request.Method.GET, jsonPredictionURL,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
+                            remainingRequestCount--;
                             displayPredictions(response);
                         } catch (JSONException e) {
                             Log.e("mwArticle", "Encountered a JSONException while parsing forecast: " + e.getMessage());
@@ -155,20 +188,24 @@ public class ArticleActivity extends BaseActivity {
                     @Override
                     // Handles errors that occur due to Volley
                     public void onErrorResponse(VolleyError error) {
+                        remainingRequestCount--;
                         Log.e("mwArticle", error.toString());
                     }
                 });
         requestQueue.add(predictionReq);
 
+        remainingRequestCount++;
         JsonArrayRequest graphReq = new JsonArrayRequest(Request.Method.GET, JsonGraphURL,
                 // The third parameter Listener overrides the method onResponse() and passes
                 //JSONObject as a parameter
                 new Response.Listener<JSONArray>() {
-
                     // Takes the response from the JSON request
                     @Override
                     public void onResponse(JSONArray response) {
+                        remainingRequestCount--;
                         try {
+                            graph.setVisibility(View.VISIBLE);
+
                             Random rnd = new Random();
 
                             String localMarketplaceTmp;
@@ -193,8 +230,7 @@ public class ArticleActivity extends BaseActivity {
                                             getDatasFromJSONArray(response.getJSONObject(i).getJSONArray("data"))));
 
                                     // To display default series (min & max)
-                                    if (localMarketplaceTmp.equals(MarketplaceMax) || localMarketplaceTmp.equals(MarketplaceMin))
-                                    {
+                                    if (localMarketplaceTmp.equals(MarketplaceMax) || localMarketplaceTmp.equals(MarketplaceMin)) {
                                         mySeries.get(i).setColor(Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256)));
                                         mySeries.get(i).setThickness(6);
                                         graph.addSeries(mySeries.get(i));
@@ -228,6 +264,7 @@ public class ArticleActivity extends BaseActivity {
                     @Override
                     // Handles errors that occur due to Volley
                     public void onErrorResponse(VolleyError error) {
+                        remainingRequestCount--;
                         Log.e("Volley", "Error");
                     }
                 }) {
@@ -240,6 +277,19 @@ public class ArticleActivity extends BaseActivity {
         };
 
         requestQueue.add(graphReq);
+
+        final ProgressBar spinner = (ProgressBar) findViewById(R.id.articleProgressBar);
+        spinner.setVisibility(View.VISIBLE);
+        spinner.setIndeterminate(true);
+
+        requestQueue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+            @Override
+            public void onRequestFinished(Request<Object> request) {
+                if (remainingRequestCount <= 0) {
+                    spinner.setVisibility(View.GONE);
+                }
+            }
+        });
 
         graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
     }
@@ -263,7 +313,7 @@ public class ArticleActivity extends BaseActivity {
 
         // 5 day forecast is the linear regression
         if (linearRegression != null) {
-            forecasts.put(5, linearRegression.getDouble("intercept"));
+            forecasts.put(5, (int) Math.floor(linearRegression.getDouble("intercept")));
         }
 
         // The other two are computed using the polynomial regression
@@ -296,6 +346,10 @@ public class ArticleActivity extends BaseActivity {
         }
 
         view.setText(text);
+
+        if (forecasts.size() > 0) {
+            view.setVisibility(View.VISIBLE);
+        }
 
         Log.i("mwArticle", "Computed : " + forecasts.toString());
     }
@@ -389,6 +443,8 @@ public class ArticleActivity extends BaseActivity {
                                     (("" + articleDatas.getJSONObject("history").getJSONObject("max").getDouble("price")).split("\\.")[0] + ","
                                             + ("" + articleDatas.getJSONObject("history").getJSONObject("max").getDouble("price")).split("\\.")[1])) + "€"
                     ) : "");
+
+            mainArticleInfo.setVisibility(View.VISIBLE);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -431,10 +487,8 @@ public class ArticleActivity extends BaseActivity {
     public void checkedMarketplaceHandler(View v) {
         CheckBox checkBox = (CheckBox) v;
 
-        for (int i=0; i < MarketPlacesView.getChildCount(); i++)
-        {
-            if (MarketPlacesView.getChildAt(i) == v.getParent())
-            {
+        for (int i = 0; i < MarketPlacesView.getChildCount(); i++) {
+            if (MarketPlacesView.getChildAt(i) == v.getParent()) {
                 if (checkBox.isChecked()) graph.addSeries(mySeries.get(i));
                 else graph.removeSeries(mySeries.get(i));
             }
