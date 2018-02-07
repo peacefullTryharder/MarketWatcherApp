@@ -560,7 +560,7 @@ public class ArticleActivity extends BaseActivity {
                 "Merci de votre confiance et à bientôt,\n" +
                 "\n" +
                 "L'équipe Marketwatcher\n\n" +
-                "Site : https://www.marketwatcher.fr/\n\n"+
+                "Site : https://www.marketwatcher.fr/\n"+
                 "Application : https://play.google.com/store/apps/details?id=fr.marketwatcher.android");
         try {
             startActivity(Intent.createChooser(i, "Envoi de l'email..."));
