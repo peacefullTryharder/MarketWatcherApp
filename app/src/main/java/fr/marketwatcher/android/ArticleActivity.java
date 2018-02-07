@@ -128,6 +128,7 @@ public class ArticleActivity extends BaseActivity {
 
         requestQueue.add(arrayReq);
 
+        final ArrayList<LineGraphSeries<DataPoint>> mySeries = new ArrayList<LineGraphSeries<DataPoint>>();
 
         JsonArrayRequest graphReq = new JsonArrayRequest(Request.Method.GET, JsonGraphURL,
                 // The third parameter Listener overrides the method onResponse() and passes
@@ -141,8 +142,6 @@ public class ArticleActivity extends BaseActivity {
                             Random rnd = new Random();
 
                             String localMarketplaceTmp;
-
-                            ArrayList<LineGraphSeries<DataPoint>> mySeries = new ArrayList<LineGraphSeries<DataPoint>>();
 
                             // To adapt the ListView size to our data set
 
@@ -324,5 +323,9 @@ public class ArticleActivity extends BaseActivity {
             default:
                 return "";
         }
+    }
+
+    interface MarketplaceBooleanChangedListener {
+        public void OnBooleanChanged();
     }
 }
