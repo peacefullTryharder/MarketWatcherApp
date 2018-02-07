@@ -1,5 +1,6 @@
 package fr.marketwatcher.android;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -97,7 +98,8 @@ public class RegisterActivity extends AppCompatActivity {
                     thread.join();
 
                     if (successReg) {
-                        Toast.makeText(getApplicationContext(), "Vous avez bien été inscrit. Connectez-vous maintenant", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                        Toast.makeText(getApplicationContext(), "Vous avez bien été inscrit. Vous pouvez dès à présent vous connecter.", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(getApplicationContext(), "Désolé, nous n'avons pas réussi à vous enregistrer", Toast.LENGTH_SHORT).show();
                         mRegNameView.setText(null);
