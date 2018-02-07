@@ -17,15 +17,16 @@
     <string name="home">Accueil</string>
     <string name="catalog">Catalogue</string>
     <string name="deals">Deals</string>
-
+    <string name="navAdd">Ajout</string>
 
     <string name="action_settings">Settings</string>
 
     <string name="text_empty">Liste vide</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="regName">Nom</string>
     <string name="logRegisterLink">Pas de compte ? Cliquez ici pour vous inscrire !</string>
     <string name="mLogImageAlt">Application Logo</string>
+    <string name="navDisconnect">Déconnexion</string>
+
+    <string name="toastLogout">Vous avez été déconnecté</string>
 </resources>

@@ -3,6 +3,7 @@ package fr.marketwatcher.android;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -61,6 +62,12 @@ public class LoginActivity extends AppCompatActivity {
         mLogPasswordView = (EditText) findViewById(R.id.logPassword);
         mLogSubmitView = (Button) findViewById(R.id.logSubmit);
         mLogRegisterLink = (TextView) findViewById(R.id.logRegisterLink);
+
+        // Enable Android O autocomplete
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            mLogEmailView.setAutofillHints("email");
+            mLogPasswordView.setAutofillHints("password");
+        }
 
         mLogRegisterLink.setOnClickListener(new OnClickListener() {
             @Override

@@ -1,5 +1,6 @@
 package fr.marketwatcher.android;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -24,16 +25,17 @@ public abstract class BaseActivity extends AppCompatActivity
     public Intent BarcodeResultActivity;
     public Intent DealsActivity;
 
+    SharedPreferences preferences;
+
     public static final String API_URL = "https://api.marketwatcher.fr";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-                super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
-    public void setContentView(int layoutResId)
-    {
+    public void setContentView(int layoutResId) {
         LinearLayout fullView = (LinearLayout) getLayoutInflater().inflate(R.layout.activity_base, null);
         FrameLayout activityContainer = (FrameLayout) fullView.findViewById(R.id.activity_content);
         getLayoutInflater().inflate(layoutResId, activityContainer, true);
@@ -55,10 +57,11 @@ public abstract class BaseActivity extends AppCompatActivity
 
     }
 
-    public void selectActualItemOnTheNavigationDrawer(NavigationView navigationView)
-    {
-        if (getTitle().equals(getString(R.string.home))) navigationView.setCheckedItem(R.id.nav_home);
-        else if (getTitle().equals(getString(R.string.catalog))) navigationView.setCheckedItem(R.id.nav_catalog);
+    public void selectActualItemOnTheNavigationDrawer(NavigationView navigationView) {
+        if (getTitle().equals(getString(R.string.home)))
+            navigationView.setCheckedItem(R.id.nav_home);
+        else if (getTitle().equals(getString(R.string.catalog)))
+            navigationView.setCheckedItem(R.id.nav_catalog);
     }
 
     @Override
@@ -93,17 +96,18 @@ public abstract class BaseActivity extends AppCompatActivity
             DealsActivity = new Intent(getApplicationContext(), DealsActivity.class);
             startActivity(DealsActivity);
 
-        } else if (id == R.id.nav_add && !getTitle().equals("Ajout")) {
+        } else if (id == R.id.nav_add && !getTitle().equals(getString(R.string.navAdd))) {
 
             BarcodeResultActivity = new Intent(getApplicationContext(), BarcodeResultActivity.class);
             startActivity(BarcodeResultActivity);
 
-        }  else if (id == R.id.nav_disconnect) {
+        } else if (id == R.id.nav_disconnect) {
+            deleteToken();
 
-            LoginActivity = new Intent(getApplicationContext(), LoginActivity.class);
+            LoginActivity = new Intent(this, LoginActivity.class);
             startActivity(LoginActivity);
 
-            Toast.makeText(getApplicationContext(),"Vous avez été déconnecté",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.toastLogout), Toast.LENGTH_SHORT).show();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -111,22 +115,27 @@ public abstract class BaseActivity extends AppCompatActivity
         return true;
     }
 
-    public String getToken()
-    {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+    private SharedPreferences getPreferences() {
+        if (preferences == null) {
+            preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        }
+        return preferences;
+    }
+
+    public String getToken() {
         String token = null;
-        if (preferences.contains("token")) {
-            token = preferences.getString("token", "");
+        if (getPreferences().contains("token")) {
+            token = getPreferences().getString("token", "");
         }
         return token;
     }
 
-    public void deleteToken()
-    {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.clear();
-        editor.apply();
+    @SuppressLint("ApplySharedPref")
+    public void deleteToken() {
+        SharedPreferences.Editor editor = getPreferences().edit();
+
+        // using commit because we need the change *now*
+        editor.clear().commit();
     }
 
     public void redirectionToLogin() {

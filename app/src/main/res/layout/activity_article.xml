@@ -29,6 +29,7 @@
             android:layout_marginTop="16dp"/> -->
 
         <LinearLayout
+            android:id="@+id/articleMainInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -111,6 +112,13 @@
 
         </LinearLayout>
 
+        <ProgressBar
+            android:id="@+id/articleProgressBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" />
+
         <com.jjoe64.graphview.GraphView
             android:layout_width="match_parent"
             android:layout_height="200dp"
@@ -120,6 +128,7 @@
             android:id="@+id/articleForecast"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
             android:textColor="#000000" />
 
         <LinearLayout
