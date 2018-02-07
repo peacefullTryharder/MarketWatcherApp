@@ -33,9 +33,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -86,8 +85,6 @@ public class ArticleActivity extends BaseActivity {
         Date lastYearDate = cal.getTime();
         String lastYearText = cal.get(Calendar.YEAR) + "-" + (1 + cal.get(Calendar.MONTH))
                 + "-" + (cal.get(Calendar.DAY_OF_MONTH));
-
-        Log.i("mwArticle", lastYearText);
 
         JsonArticleURL = BaseActivity.API_URL + "/product/" + getIntent().getStringExtra("googleId");
         JsonGraphURL = BaseActivity.API_URL + "/product/" + getIntent().getStringExtra("googleId")
@@ -167,8 +164,6 @@ public class ArticleActivity extends BaseActivity {
 
         requestQueue.add(arrayReq);
 
-        final ArrayList<LineGraphSeries<DataPoint>> mySeries = new ArrayList<>();
-
         remainingRequestCount++;
         JsonObjectRequest predictionReq = new JsonObjectRequest(Request.Method.GET, jsonPredictionURL,
                 new Response.Listener<JSONObject>() {
@@ -210,11 +205,11 @@ public class ArticleActivity extends BaseActivity {
 
                             String localMarketplaceTmp;
 
-                            // To adapt the ListView size to our data set
+                            for (int i=0; i<response.length(); i++)
+                            {
 
-                            for (int i = 0; i < response.length(); i++) {
-
-                                if (response.getJSONObject(i).getJSONObject("_id").has("marketplace")) {
+                                if (response.getJSONObject(i).getJSONObject("_id").has("marketplace"))
+                                {
 
                                     localMarketplaceTmp = response.getJSONObject(i).getJSONObject("_id").getString("marketplace");
 
@@ -222,7 +217,7 @@ public class ArticleActivity extends BaseActivity {
                                             (response.getJSONObject(i).getJSONObject("_id").getString("marketplace").length() <= 10) ?
                                                     response.getJSONObject(i).getJSONObject("_id").getString("marketplace")
                                                     : (response.getJSONObject(i).getJSONObject("_id").getString("marketplace").substring(0, 10) + ".."),
-                                            response.getJSONObject(i).getJSONArray("data").getJSONObject(response.getJSONObject(i).getJSONArray("data").length() - 1).getString("price"),
+                                            response.getJSONObject(i).getJSONArray("data").getJSONObject(response.getJSONObject(i).getJSONArray("data").length()-1).getString("price"),
                                             getMarketplaceImageUrl(response.getJSONObject(i).getJSONObject("_id").getString("marketplace")),
                                             localMarketplaceTmp.equals(MarketplaceMax) || localMarketplaceTmp.equals(MarketplaceMin)));
 
@@ -230,7 +225,8 @@ public class ArticleActivity extends BaseActivity {
                                             getDatasFromJSONArray(response.getJSONObject(i).getJSONArray("data"))));
 
                                     // To display default series (min & max)
-                                    if (localMarketplaceTmp.equals(MarketplaceMax) || localMarketplaceTmp.equals(MarketplaceMin)) {
+                                    if (localMarketplaceTmp.equals(MarketplaceMax) || localMarketplaceTmp.equals(MarketplaceMin))
+                                    {
                                         mySeries.get(i).setColor(Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256)));
                                         mySeries.get(i).setThickness(6);
                                         graph.addSeries(mySeries.get(i));
@@ -247,7 +243,7 @@ public class ArticleActivity extends BaseActivity {
 
                             MarketPlacesView.setAdapter(adapter);
 
-                            ScrollArticle.smoothScrollTo(0, 0);
+                            ScrollArticle.smoothScrollTo(0,0);
 
                         }
                         // Try and catch are included to handle any errors due to JSON
@@ -377,12 +373,6 @@ public class ArticleActivity extends BaseActivity {
         return yEven + yOdd * x;
     }
 
-
-    @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-    }
-
     public DataPoint[] getDatasFromJSONArray(JSONArray datas) {
         List<DataPoint> values = new ArrayList<DataPoint>();
         DataPoint[] finalValues;
@@ -391,11 +381,13 @@ public class ArticleActivity extends BaseActivity {
 
         try {
 
-            for (int k = datas.length() - 365; k < datas.length(); k++) {
+
+            for (int k = 0; k < datas.length(); k++) {
                 values.add(new DataPoint(
                         k,
                         datas.getJSONObject(k).getDouble("price")));
             }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -480,15 +472,12 @@ public class ArticleActivity extends BaseActivity {
         }
     }
 
-    interface MarketplaceBooleanChangedListener {
-        public void OnBooleanChanged();
-    }
-
     public void checkedMarketplaceHandler(View v) {
         CheckBox checkBox = (CheckBox) v;
 
         for (int i = 0; i < MarketPlacesView.getChildCount(); i++) {
             if (MarketPlacesView.getChildAt(i) == v.getParent()) {
+
                 if (checkBox.isChecked()) graph.addSeries(mySeries.get(i));
                 else graph.removeSeries(mySeries.get(i));
             }
