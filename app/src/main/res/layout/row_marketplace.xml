@@ -32,7 +32,8 @@
         android:layout_alignBaseline="@+id/txtNameMarketplace"
         android:layout_alignBottom="@+id/txtNameMarketplace"
         android:layout_toStartOf="@+id/linearLayout"
-        android:layout_marginEnd="7dp" />
+        android:layout_marginEnd="7dp"
+        android:onClick="checkedMarketplaceHandler" />
 
     <LinearLayout
         android:layout_width="120dp"
@@ -61,11 +62,6 @@
             android:layout_gravity="center"
             android:layout_marginLeft="5dp"
             android:backgroundTint="#FFFFFF" />
-        <!-- <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginRight="5dp"/> -->
 
     </LinearLayout>
 

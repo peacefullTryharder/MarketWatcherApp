@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -143,8 +144,6 @@ public class ArticleActivity extends BaseActivity {
 
                             String localMarketplaceTmp;
 
-                            // To adapt the ListView size to our data set
-
                             for (int i=0; i<response.length(); i++)
                             {
 
@@ -161,16 +160,17 @@ public class ArticleActivity extends BaseActivity {
                                             getMarketplaceImageUrl(response.getJSONObject(i).getJSONObject("_id").getString("marketplace")),
                                             localMarketplaceTmp.equals(MarketplaceMax) || localMarketplaceTmp.equals(MarketplaceMin)));
 
-
                                     mySeries.add(new LineGraphSeries<>(
                                             getDatasFromJSONArray(response.getJSONObject(i).getJSONArray("data"))));
 
+                                    // To display default series (min & max)
                                     if (localMarketplaceTmp.equals(MarketplaceMax) || localMarketplaceTmp.equals(MarketplaceMin))
                                     {
                                         mySeries.get(i).setColor(Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256)));
                                         mySeries.get(i).setThickness(6);
                                         graph.addSeries(mySeries.get(i));
                                     }
+
                                 }
                             }
 
@@ -327,5 +327,17 @@ public class ArticleActivity extends BaseActivity {
 
     interface MarketplaceBooleanChangedListener {
         public void OnBooleanChanged();
+    }
+
+    public void checkedMarketplaceHandler(View v) {
+        int position;
+
+        for (int i=0; i < MarketPlacesView.getChildCount(); i++)
+        {
+            if (MarketPlacesView.getChildAt(i) == v.getParent())
+            {
+                position = i;
+            }
+        } // In completion
     }
 }

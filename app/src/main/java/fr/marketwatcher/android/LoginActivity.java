@@ -1,4 +1,4 @@
-package android.ece.bapti.marketwatcherapp;
+package fr.marketwatcher.android;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
