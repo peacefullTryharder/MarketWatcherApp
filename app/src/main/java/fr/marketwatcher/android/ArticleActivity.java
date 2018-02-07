@@ -211,7 +211,7 @@ public class ArticleActivity extends BaseActivity {
 
         requestQueue.add(graphReq);
 
-        // graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+        graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
     }
 
     @Override

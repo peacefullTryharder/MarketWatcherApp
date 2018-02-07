@@ -22,8 +22,8 @@
     <ImageView
                     android:id="@+id/imageView"
                     android:layout_width="180dp"
-                    android:layout_height="180dp"
-                    app:srcCompat="@drawable/green_logo"
+                    android:layout_height="100dp"
+                    app:srcCompat="@drawable/logo"
                     android:layout_below="@+id/textView"
                     android:layout_centerHorizontal="true" />
 

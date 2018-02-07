@@ -20,19 +20,10 @@
             android:id="@+id/nav_add"
             android:icon="@drawable/ic_menu_add"
             android:title="Ajout" />
+        <item
+            android:id="@+id/nav_disconnect"
+            android:icon="@drawable/ic_menu_disconnect"
+            android:title="Déconnexion" />
     </group>
-
-    <item android:title="Autre">
-        <menu>
-            <item
-                android:id="@+id/nav_contact"
-                android:icon="@drawable/ic_menu_contact"
-                android:title="Contact" />
-            <item
-                android:id="@+id/nav_disconnect"
-                android:icon="@drawable/ic_menu_disconnect"
-                android:title="Déconnexion" />
-        </menu>
-    </item>
 
 </menu>

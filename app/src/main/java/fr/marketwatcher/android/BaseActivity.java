@@ -84,19 +84,17 @@ public abstract class BaseActivity extends AppCompatActivity
             CatalogActivity = new Intent(getApplicationContext(), CatalogActivity.class);
             startActivity(CatalogActivity);
 
-        } else if (id == R.id.nav_deals) {
+        } else if (id == R.id.nav_deals && !getTitle().equals(getString(R.string.deals))) {
 
             DealsActivity = new Intent(getApplicationContext(), DealsActivity.class);
             startActivity(DealsActivity);
 
-        } else if (id == R.id.nav_add) {
+        } else if (id == R.id.nav_add && !getTitle().equals("Ajout")) {
 
             BarcodeResultActivity = new Intent(getApplicationContext(), BarcodeResultActivity.class);
             startActivity(BarcodeResultActivity);
 
-        } else if (id == R.id.nav_contact) {
-
-        } else if (id == R.id.nav_disconnect) {
+        }  else if (id == R.id.nav_disconnect) {
 
             LoginActivity = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(LoginActivity);

@@ -43,7 +43,7 @@
                     android:text="Multimédia"
                     android:textSize="16sp"
                     android:background="@drawable/category_radio"
-                    android:padding="16dp"
+                    android:padding="12dp"
                     android:checked="true"
                     android:button="@android:color/transparent"
                     android:textColor="@drawable/category_radio_text_color"/>

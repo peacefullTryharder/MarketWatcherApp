@@ -206,7 +206,7 @@ public class LoginActivity extends AppCompatActivity {
                 thread.join();
 
                 if (!isValidEmail(mLogEmailView.getText()) || !isValidNamePw()) {
-                    Toast.makeText(LoginActivity.this, "Champs incorrectes !", Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, "Champs incorrects !", Toast.LENGTH_LONG).show();
 
                 } else if (successReg) {
                     Toast.makeText(getApplicationContext(), "Vous avez bien été inscrit. Connectez-vous maintenant", Toast.LENGTH_SHORT).show();
