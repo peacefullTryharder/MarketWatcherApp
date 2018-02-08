@@ -30,6 +30,7 @@ import com.android.volley.toolbox.Volley;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.jjoe64.graphview.series.OnDataPointTapListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,7 +54,6 @@ public class ArticleActivity extends BaseActivity {
     private TextView Name = null;
     private TextView Category = null;
     private TextView About = null;
-    private TextView Brand = null;
     private TextView MinPrice = null;
     private TextView MaxPrice = null;
     private ImageView ArticleImage = null;
@@ -135,9 +135,9 @@ public class ArticleActivity extends BaseActivity {
         ScrollArticle = (ScrollView) findViewById(R.id.scrollArticle);
         ScrollArticle.requestDisallowInterceptTouchEvent(true);
 
+        Name = (TextView) findViewById(R.id.txtNameArticleActivity);
         Category = (TextView) findViewById(R.id.txtCategoryArticleActivity);
         About = (TextView) findViewById(R.id.txtAboutArticleActivity);
-        Brand = (TextView) findViewById(R.id.txtBrandArticleActivity);
         MinPrice = (TextView) findViewById(R.id.txtMinPriceArticleActivity);
         MaxPrice = (TextView) findViewById(R.id.txtMaxPriceArticleActivity);
 
@@ -378,21 +378,24 @@ public class ArticleActivity extends BaseActivity {
         }
 
         TextView view = (TextView) findViewById(R.id.articleForecast);
+        TextView viewTitle = (TextView) findViewById(R.id.articleForecastTitle);
 
         // fixme: use string builder and i18n
-        String text = "Prédiction du prix pour les jours à venir : \n";
+        String text = "";
 
         if (forecasts.get(5) != null) {
             text += "· d'ici 5 jours : " + forecasts.get(5) + " €\n";
         }
         if (forecasts.get(42) != null) {
-            text += "· dans 42 jours : " + forecasts.get(42) + " €\n";
+            text += "· dans 40 jours : " + forecasts.get(42) + " €\n";
         }
         if (forecasts.get(90) != null) {
             text += "· dans 3 mois : " + forecasts.get(90) + " €\n";
         }
 
+
         view.setText(text);
+        viewTitle.setText("Prédiction du prix pour les jours à venir:");
 
         productPrediction = view.getText().toString();
 
@@ -465,6 +468,9 @@ public class ArticleActivity extends BaseActivity {
             setTitle(articleDatas.has("name") ?
                     articleDatas.getString("name") : "");
 
+            Name.setText(articleDatas.has("name") ?
+                    articleDatas.getString("name") : "");
+
             Category.setText(articleDatas.has("category") ?
                     articleDatas.getString("category") : "Article");
 
@@ -472,21 +478,6 @@ public class ArticleActivity extends BaseActivity {
                     (articleDatas.getString("brand") + " ") : "") +
                     (articleDatas.has("model") ?
                             (articleDatas.getString("model") + " ") : "") + "");
-
-            Brand.setText(articleDatas.has("brand") ?
-                    articleDatas.getString("brand") : "");
-
-            productName = articleDatas.has("name") ?
-                    articleDatas.getString("name") : "";
-
-            productBrand = articleDatas.has("brand") ?
-                    articleDatas.getString("brand") : "" ;
-
-            productModel = articleDatas.has("model") ?
-                    articleDatas.getString("model") : "" ;
-
-            productAuthor = articleDatas.has("author") ?
-                    articleDatas.getString("author") : "" ;
 
             new DownloadImageFromInternet(ArticleImage)
                     .execute(articleDatas.has("image") ?
@@ -510,6 +501,18 @@ public class ArticleActivity extends BaseActivity {
                                             + ("" + articleDatas.getJSONObject("history").getJSONObject("max").getDouble("price")).split("\\.")[1])) + "€"
                     ) : "");
 
+            productName = articleDatas.has("name") ?
+                    articleDatas.getString("name") : "";
+
+            productBrand = articleDatas.has("brand") ?
+                    articleDatas.getString("brand") : "" ;
+
+            productModel = articleDatas.has("model") ?
+                    articleDatas.getString("model") : "" ;
+
+            productAuthor = articleDatas.has("author") ?
+                    articleDatas.getString("author") : "" ;
+
             productPriceMin = MinPrice.getText().toString();
 
             productPriceMax = MaxPrice.getText().toString();
@@ -524,7 +527,10 @@ public class ArticleActivity extends BaseActivity {
         switch (marketplace) {
             case "Fnac":
             case "Fnac.com":
+            case "Fnac - Darty":
                 return "http://www.gurret.fr/wp-content/uploads/2016/09/logo-fnac-100x100.png";
+            case "eBay":
+                return "https://media.glassdoor.com/sql/7853/ebay-squarelogo-1496964024857.png";
             case "EasyLounge":
                 return "http://static8.viadeo-static.com/SxUoMWEuUex3z4PBoXM5pmX6tDg=/fit-in/200x200/filters:fill(white)/9460eed72f9c4f718ed0f4d82f0a67a8/1434475018.jpeg";
             case "Cobra":
@@ -534,6 +540,9 @@ public class ArticleActivity extends BaseActivity {
             case "Darty":
             case "Darty.com":
                 return "https://www.darty.com/static/gdH5/desktop2/common/images/darty_sprite/sprite_darty_logo.png";
+            case "Cultura":
+            case "Cultura.com":
+                return "https://recrutement.cultura.com/wp-content/uploads/2017/10/logocultura.png";
             case "Boulanger":
                 return "https://media.glassdoor.com/sql/846210/boulanger-squarelogo-1462867429355.png";
             case "Ubaldi":
@@ -545,6 +554,10 @@ public class ArticleActivity extends BaseActivity {
             case "Samsung":
             case "Samsung Shop France":
                 return "https://arwac.be/files/uploads/2015/03/samsung-logo.jpg";
+            case "PriceMinister":
+            case "PriceMinister - Rakuten":
+            case "PriceMinister Rakuten":
+                return "https://media.licdn.com/mpr/mpr/shrinknp_100_100/AAIA_wDGAAAAAQAAAAAAAA1lAAAAJGY0MGI3MzM1LTkyMmUtNDlhNi1iMmY0LTBjZTBjMzA2MjJlOA.png";
             default:
                 return "";
         }
