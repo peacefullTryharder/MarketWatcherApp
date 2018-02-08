@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -46,6 +47,8 @@ public class CatalogActivity extends BaseActivity {
     private final List<String> menuItems = new ArrayList<>();
     private final List<Boolean> menuItemsIsChecked = new ArrayList<>();
 
+    private ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,11 +57,13 @@ public class CatalogActivity extends BaseActivity {
 
         access_token = getToken();
 
-
         mListView = (ListView) findViewById(R.id.listCatalog);
         catalogSearch = (EditText) findViewById(R.id.catalogSearch);
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
+
+        progressBar = (ProgressBar) findViewById(R.id.catalogProgressBar);
+        progressBar.setVisibility(View.INVISIBLE);
 
         // Category menu handled by this RecyclerView
         JsonFirstCallURL = BaseActivity.API_URL + "/product/";
@@ -77,10 +82,8 @@ public class CatalogActivity extends BaseActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         try {
-                            for(int i=0; i<response.length(); i++)
-                            {
-                                if (!menuItems.contains(response.getJSONObject(i).getString("category")))
-                                {
+                            for (int i = 0; i < response.length(); i++) {
+                                if (!menuItems.contains(response.getJSONObject(i).getString("category"))) {
                                     menuItems.add(response.getJSONObject(i).getString("category"));
                                     menuItemsIsChecked.add(false);
                                 }
@@ -105,7 +108,7 @@ public class CatalogActivity extends BaseActivity {
                         Log.e("Volley", "Error");
                     }
                 }
-        ){
+        ) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
@@ -142,21 +145,19 @@ public class CatalogActivity extends BaseActivity {
     public void checkedCategoryMenu(View v) {
         CheckBox checkBox = (CheckBox) v;
 
-        for (int i=0; i<menuItems.size(); i++)
-        {
-            if (menuItems.get(i).equals(checkBox.getText().toString()))
-            {
+        for (int i = 0; i < menuItems.size(); i++) {
+            if (menuItems.get(i).equals(checkBox.getText().toString())) {
                 menuItemsIsChecked.set(i, !menuItemsIsChecked.get(i));
                 updateCatalogList();
             }
         }
     }
 
-    public void updateCatalogList()
-    {
+    public void updateCatalogList() {
+        progressBar.setVisibility(View.VISIBLE);
 
         JsonURL = BaseActivity.API_URL + "/product/" +
-                (catalogSearch.getText().toString().length() >=3 ?
+                (catalogSearch.getText().toString().length() >= 3 ?
                         "search?term=" + catalogSearch.getText().toString() :
                         "");
 
@@ -168,6 +169,8 @@ public class CatalogActivity extends BaseActivity {
                     // Takes the response from the JSON request
                     @Override
                     public void onResponse(JSONArray response) {
+                        progressBar.setVisibility(View.INVISIBLE);
+
                         try {
 
                             items.clear();
@@ -175,10 +178,8 @@ public class CatalogActivity extends BaseActivity {
                             JSONObject jsonObject;
                             CatalogItemAdapter adapter;
 
-                            if (!menuItemsIsChecked.contains(true))
-                            {
-                                for (int i=0; i<response.length(); i++)
-                                {
+                            if (!menuItemsIsChecked.contains(true)) {
+                                for (int i = 0; i < response.length(); i++) {
                                     jsonObject = response.getJSONObject(i);
 
                                     items.add(new CatalogItem(
@@ -195,18 +196,13 @@ public class CatalogActivity extends BaseActivity {
 
                                 adapter = new CatalogItemAdapter(CatalogActivity.this, items);
                                 mListView.setAdapter(adapter);
-                            }
-                            else
-                            {
+                            } else {
 
-                                for (int i=0; i<response.length(); i++)
-                                {
+                                for (int i = 0; i < response.length(); i++) {
                                     jsonObject = response.getJSONObject(i);
 
-                                    for (int j=0; j<menuItemsIsChecked.size(); j++)
-                                    {
-                                        if (menuItemsIsChecked.get(j) && (menuItems.get(j).equals(jsonObject.getString("category"))))
-                                        {
+                                    for (int j = 0; j < menuItemsIsChecked.size(); j++) {
+                                        if (menuItemsIsChecked.get(j) && (menuItems.get(j).equals(jsonObject.getString("category")))) {
                                             items.add(new CatalogItem(
                                                     jsonObject.has("name") ? jsonObject.getString("name") : "",
                                                     jsonObject.has("image") ? jsonObject.getString("image") : "",
@@ -242,7 +238,7 @@ public class CatalogActivity extends BaseActivity {
                         Log.e("Volley", "Error");
                     }
                 }
-        ){
+        ) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
