@@ -44,7 +44,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
+import java.lang.Math; 
+    
 public class ArticleActivity extends BaseActivity {
 
     private String JsonArticleURL, JsonGraphURL;
@@ -384,6 +385,12 @@ public class ArticleActivity extends BaseActivity {
      * @return y
      */
     private double polynomial(double[] params, double x) {
+        double val=0
+        for (int i=0;i<params.length;i++){
+             val+=params[i]*Math.pow(x,(i+1))            
+        }
+        return val
+        /*
         double xSquared = x * x;
         double yOdd = 0d, yEven = 0d;
 
@@ -397,6 +404,7 @@ public class ArticleActivity extends BaseActivity {
             yEven = params[index - 1] + yEven * xSquared;
         }
         return yEven + yOdd * x;
+        */
     }
 
     public DataPoint[] getDatasFromJSONArray(JSONArray datas) {
