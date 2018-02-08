@@ -75,8 +75,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentTop="true"
-                            android:background="#0967a7"
-                            android:src="@android:drawable/ic_menu_share" />
+                            android:src="@drawable/ic_action_name"/>
 
                         <TextView
                             android:id="@+id/txtAboutArticleActivity"
@@ -133,8 +132,27 @@
         <com.jjoe64.graphview.GraphView
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:id="@+id/graph"
-            android:layout_margin="10dp"/>
+            android:id="@+id/graph"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:text="Il y a 1 an"
+                android:textSize="8dp"
+                android:layout_marginLeft="10dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:text="Aujourd'hui"
+                android:textSize="8dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true" />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/articleForecastTitle"

@@ -554,6 +554,9 @@ public class ArticleActivity extends BaseActivity {
             case "Samsung":
             case "Samsung Shop France":
                 return "https://arwac.be/files/uploads/2015/03/samsung-logo.jpg";
+            case "RueDuCommerce":
+            case "RudeDuCommerce":
+                return "https://media.glassdoor.com/sql/1010446/rue-du-commerce-squarelogo-1475235072256.png";
             case "PriceMinister":
             case "PriceMinister - Rakuten":
             case "PriceMinister Rakuten":

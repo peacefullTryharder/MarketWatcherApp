@@ -1,45 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:padding="20dp">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="20dp">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="Bienvenue sur MarketWatcher"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="?attr/colorControlNormal" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Bienvenue sur MarketWatcher"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="#000000"
+            android:layout_marginBottom="20dp"/>
 
-    <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="180dp"
-                    android:layout_height="100dp"
-                    app:srcCompat="@drawable/logo"
-                    android:layout_below="@+id/textView"
-                    android:layout_centerHorizontal="true" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="Voici quelques conseils pour bien utiliser l'application !"
+           />
 
-    <TextView
-        android:id="@+id/homeMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:text="Vous en avez marre des passer des heures à chercher le meilleur prix pour cette télévision qui vous fait de l'oeil ? Ou bien de traquer une réduction de prix pour remplacer votre casque audio ?"
-        android:layout_marginBottom="20dp"/>
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="180dp"
+            android:layout_height="100dp"
+            app:srcCompat="@drawable/logo"
+            android:layout_below="@+id/textView"
+            android:layout_centerHorizontal="true" />
 
-    <TextView
-        android:id="@+id/homeMessage2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="MarketWatcher est l'outil idéal qui vous facilite cette tâche et conseil les meilleurs prix sur votre prochain achat. Notre application vous montrera, sur un produit compris dans notre catalogue, les différentes marketplaces en ligne où il est vendu ainsi que l'évolution de son prix au cours du temps. Nous vous proposons en plus d'un historique des prix, une prédiction du coût de l'objet dans les semaines à venir. Ainsi MarketWatcher sera le guide parfait lors de vos futurs achats."
-        android:textAlignment="center" />
+
+        <View
+            android:layout_width="300dp"
+            android:layout_height="1dp"
+            android:background="#d3d3d3"
+            android:layout_marginBottom="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vous retrouverez en haut à gauche un menu menant aux différentes fonctionnalités de l'application."
+            android:textAlignment="center"
+            android:layout_marginBottom="20dp" />
+
+        <View
+            android:layout_width="300dp"
+            android:layout_height="1dp"
+            android:background="#d3d3d3"
+            android:layout_marginBottom="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dans catalogue vous accéderez à une liste de produits que nous surveillons. Pour chaque produit vous pouvez accéder à son historique de prix ainsi qu'une prédiction à court et moyen terme."
+            android:textAlignment="center"
+            android:layout_marginBottom="20dp"/>
+
+        <View
+            android:layout_width="300dp"
+            android:layout_height="1dp"
+            android:background="#d3d3d3"
+            android:layout_marginBottom="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ajout vous permettra de nous proposer un produit à surveiller en scannant son code-barre ou renseignant son GTIN"
+            android:textAlignment="center" />
 
 </LinearLayout>
