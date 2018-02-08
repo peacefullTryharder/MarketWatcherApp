@@ -29,4 +29,5 @@
     <string name="navDisconnect">Déconnexion</string>
 
     <string name="toastLogout">Vous avez été déconnecté</string>
+    <string name="catalogSearch">Rechercher</string>
 </resources>
