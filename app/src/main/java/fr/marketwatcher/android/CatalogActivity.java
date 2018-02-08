@@ -146,7 +146,6 @@ public class CatalogActivity extends BaseActivity {
             if (menuItems.get(i).equals(checkBox.getText().toString()))
             {
                 menuItemsIsChecked.set(i, !menuItemsIsChecked.get(i));
-                // Toast.makeText(this, menuItemsIsChecked.get(i) + " | Value: " + menuItems.get(i) + " i: " + i, Toast.LENGTH_SHORT).show();
                 updateCatalogList();
             }
         }

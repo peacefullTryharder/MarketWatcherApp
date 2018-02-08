@@ -44,6 +44,7 @@
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"
         android:clickable="true"
+        android:onClick="onLinkClick"
         android:id="@+id/linearLayout">
 
         <TextView

@@ -2,6 +2,7 @@ package fr.marketwatcher.android;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.ArrayMap;
@@ -73,6 +74,7 @@ public class ArticleActivity extends BaseActivity {
     private String productPrediction = null;
     private String nameUser = null;
 
+    String offerUrl;
 
     private ArrayList<LineGraphSeries<DataPoint>> mySeries = new ArrayList<LineGraphSeries<DataPoint>>();
 
@@ -146,6 +148,9 @@ public class ArticleActivity extends BaseActivity {
                     public void onResponse(JSONArray response) {
                         remainingRequestCount--;
                         try {
+                            offerUrl = response.getJSONObject(0).has("offerUrl") ?
+                                    response.getJSONObject(0).getString("offerUrl") : "";
+
                             setArticleContent(response.getJSONObject(0));
                             if (response.getJSONObject(0).has("history")) {
                                 MarketplaceMax = response.getJSONObject(0).getJSONObject("history")
@@ -385,11 +390,11 @@ public class ArticleActivity extends BaseActivity {
      * @return y
      */
     private double polynomial(double[] params, double x) {
-        double val=0
+        double val=0;
         for (int i=0;i<params.length;i++){
-             val+=params[i]*Math.pow(x,(i+1))            
+             val+=params[i]*Math.pow(x,(i+1));
         }
-        return val
+        return val;
         /*
         double xSquared = x * x;
         double yOdd = 0d, yEven = 0d;
@@ -606,4 +611,12 @@ public class ArticleActivity extends BaseActivity {
             }
         }
     };
+
+    public void onLinkClick(View v)
+    {
+        Intent browserIntent = new Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(offerUrl));
+        startActivity(browserIntent);
+    }
 }
