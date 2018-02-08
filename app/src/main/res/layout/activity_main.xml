@@ -46,7 +46,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Vous retrouverez en haut à gauche un menu menant aux différentes fonctionnalités de l'application."
+            android:text="Vous retrouvez en haut à gauche un menu menant aux différentes fonctionnalités de l'application."
             android:textAlignment="center"
             android:layout_marginBottom="20dp" />
 
@@ -59,7 +59,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Dans catalogue vous accéderez à une liste de produits que nous surveillons. Pour chaque produit vous pouvez accéder à son historique de prix ainsi qu'une prédiction à court et moyen terme."
+            android:text="Dans Catalogue vous allez à une liste de produits que nous surveillons. Pour chaque produit vous pouvez accéder à son historique de prix ainsi qu'à une prédiction à court et moyen terme."
             android:textAlignment="center"
             android:layout_marginBottom="20dp"/>
 
@@ -72,7 +72,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ajout vous permettra de nous proposer un produit à surveiller en scannant son code-barre ou renseignant son GTIN"
+            android:text="Ajout vous permet de nous proposer un produit à surveiller en scannant son code-barre ou en renseignant son GTIN"
             android:textAlignment="center" />
 
 </LinearLayout>
