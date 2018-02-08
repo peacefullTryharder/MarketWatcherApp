@@ -1,6 +1,7 @@
 package fr.marketwatcher.android;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,9 +22,12 @@ import java.util.List;
 
 public class MarketplaceItemAdapter extends ArrayAdapter<MarketplaceItem> {
 
-    public MarketplaceItemAdapter(Context context, List<MarketplaceItem> items)
+    private String[] graphColors;
+
+    public MarketplaceItemAdapter(Context context, List<MarketplaceItem> items, String[] graphColors)
     {
         super(context, 0, items);
+        this.graphColors = graphColors;
     }
 
     @Override
@@ -39,6 +45,7 @@ public class MarketplaceItemAdapter extends ArrayAdapter<MarketplaceItem> {
             viewHolder.txtPriceMarketplace = (TextView) convertView.findViewById(R.id.txtPriceMarketplace);
             viewHolder.imgMarketplace = (ImageView) convertView.findViewById(R.id.imgMarketplace);
             viewHolder.checkboxSeries = (CheckBox) convertView.findViewById(R.id.checkboxSeries);
+            viewHolder.layBackground = (LinearLayout) convertView.findViewById(R.id.layBackground);
             convertView.setTag(viewHolder);
         }
 
@@ -47,6 +54,7 @@ public class MarketplaceItemAdapter extends ArrayAdapter<MarketplaceItem> {
         viewHolder.txtNameMarketplace.setText(marketplaceItem.getName());
         viewHolder.txtPriceMarketplace.setText(marketplaceItem.getPrice());
         viewHolder.checkboxSeries.setChecked(marketplaceItem.getCheckedValue());
+        viewHolder.layBackground.setBackgroundColor(Color.parseColor(graphColors[position]));
 
         new DownloadImageFromInternet(viewHolder.imgMarketplace)
                 .execute(marketplaceItem.getImageUrl());
@@ -59,6 +67,7 @@ public class MarketplaceItemAdapter extends ArrayAdapter<MarketplaceItem> {
         public TextView txtPriceMarketplace;
         public ImageView imgMarketplace;
         public CheckBox checkboxSeries;
+        public LinearLayout layBackground;
     }
 
 }

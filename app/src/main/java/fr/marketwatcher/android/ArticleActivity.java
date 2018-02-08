@@ -35,9 +35,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -73,6 +70,30 @@ public class ArticleActivity extends BaseActivity {
     private String productPriceMin = null;
     private String productPrediction = null;
     private String nameUser = null;
+
+    private String[] graphColors =
+    {
+            "#e6194b",
+            "#3cb44b",
+            "#ffe119",
+            "#0082c8",
+            "#f58231",
+            "#911eb4",
+            "#46f0f0",
+            "#f032e6",
+            "#d2f53c",
+            "#fabebe",
+            "#008080",
+            "#e6beff",
+            "#aa6e28",
+            "#fffac8",
+            "#800000",
+            "#aaffc3",
+            "#808000",
+            "#ffd8b1",
+            "#000080",
+            "#808080"
+    };
 
     String offerUrl;
 
@@ -249,7 +270,7 @@ public class ArticleActivity extends BaseActivity {
                                     // To display default series (min & max)
                                     if (localMarketplaceTmp.equals(MarketplaceMax) || localMarketplaceTmp.equals(MarketplaceMin))
                                     {
-                                        mySeries.get(i).setColor(Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256)));
+                                        mySeries.get(i).setColor(Color.parseColor(graphColors[i]));
                                         mySeries.get(i).setThickness(6);
                                         graph.addSeries(mySeries.get(i));
                                     }
@@ -269,7 +290,7 @@ public class ArticleActivity extends BaseActivity {
                             ListViewParams.height = pixels * response.length();
                             MarketPlacesView.setLayoutParams(ListViewParams);
 
-                            MarketplaceItemAdapter adapter = new MarketplaceItemAdapter(ArticleActivity.this, items);
+                            MarketplaceItemAdapter adapter = new MarketplaceItemAdapter(ArticleActivity.this, items, graphColors);
 
                             MarketPlacesView.setAdapter(adapter);
 
@@ -535,7 +556,7 @@ public class ArticleActivity extends BaseActivity {
 
         for (int i = 0; i < MarketPlacesView.getChildCount(); i++) {
             if (MarketPlacesView.getChildAt(i) == v.getParent()) {
-                mySeries.get(i).setColor(Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256)));
+                mySeries.get(i).setColor(Color.parseColor(graphColors[i]));
                 mySeries.get(i).setThickness(6);
 
                 if (checkBox.isChecked()) graph.addSeries(mySeries.get(i));

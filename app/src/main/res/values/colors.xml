@@ -9,23 +9,4 @@
     <color name="windowBackground">#f4f4f4</color>
     <color name="loginWindowBackground">#0967a7</color>
 
-
-    <!-- My favourite colours
-    <color name="colorPrimary">#496e99</color>
-    <color name="colorPrimaryDark">#3e5c7e</color>
-    <color name="colorAccent">#496e99</color>
-    <color name="textColorPrimary">#f4f4f4</color>
-    <color name="navigationBarControl">#000000</color>
-    <color name="windowBackground">#f4f4f4</color>
-    <color name="loginWindowBackground">#496e99</color> -->
-
-    <!--
-    <color name="colorPrimary">#5DBE62</color>
-    <color name="colorPrimaryDark">#48a84d</color>
-    <color name="colorAccent">#48a84d</color>
-    <color name="textColorPrimary">#FFFFFF</color>
-    <color name="navigationBarControl">#000000</color>
-    <color name="windowBackground">#FFFFFF</color>
-    <color name="loginWindowBackground">#5dbe62</color>
-    -->
 </resources>

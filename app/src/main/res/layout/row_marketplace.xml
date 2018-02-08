@@ -31,21 +31,20 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/txtNameMarketplace"
         android:layout_alignBottom="@+id/txtNameMarketplace"
-        android:layout_toStartOf="@+id/linearLayout"
+        android:layout_toStartOf="@+id/layBackground"
         android:layout_marginEnd="7dp"
         android:onClick="checkedMarketplaceHandler" />
 
     <LinearLayout
+        android:id="@+id/layBackground"
         android:layout_width="120dp"
         android:layout_height="40dp"
-        android:background="@color/colorPrimaryDark"
         android:gravity="right"
         android:orientation="horizontal"
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"
         android:clickable="true"
-        android:onClick="onLinkClick"
-        android:id="@+id/linearLayout">
+        android:onClick="onLinkClick">
 
         <TextView
             android:id="@+id/txtPriceMarketplace"

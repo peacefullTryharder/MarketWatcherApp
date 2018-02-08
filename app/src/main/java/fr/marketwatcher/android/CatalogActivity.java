@@ -117,6 +117,8 @@ public class CatalogActivity extends BaseActivity {
 
         requestQueue.add(menuReq);
 
+        updateCatalogList();
+
         // Fin recycler
 
         catalogSearch.addTextChangedListener(new TextWatcher() {
@@ -132,7 +134,6 @@ public class CatalogActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                JsonURL = BaseActivity.API_URL + "/product/search?term=" + catalogSearch.getText().toString();
                 updateCatalogList();
             }
         });
@@ -154,6 +155,11 @@ public class CatalogActivity extends BaseActivity {
     public void updateCatalogList()
     {
 
+        JsonURL = BaseActivity.API_URL + "/product/" +
+                (catalogSearch.getText().toString().length() >=3 ?
+                        "search?term=" + catalogSearch.getText().toString() :
+                        "");
+
         JsonArrayRequest arrayReq = new JsonArrayRequest(Request.Method.GET, JsonURL,
                 // The third parameter Listener overrides the method onResponse() and passes
                 //JSONObject as a parameter
@@ -165,6 +171,7 @@ public class CatalogActivity extends BaseActivity {
                         try {
 
                             items.clear();
+
                             JSONObject jsonObject;
                             CatalogItemAdapter adapter;
 
