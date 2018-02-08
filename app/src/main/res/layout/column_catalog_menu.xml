@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheckBox android:id="@+id/checkboxCategory"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Category"
+    android:textSize="16sp"
+    android:background="@drawable/category_radio"
+    android:padding="12dp"
+    android:layout_marginLeft="6dp"
+    android:layout_marginRight="6dp"
+    android:checked="false"
+    android:onClick="checkedCategoryMenu"
+    android:button="@android:color/transparent"
+    android:textColor="@drawable/category_radio_text_color"
+    xmlns:android="http://schemas.android.com/apk/res/android" />

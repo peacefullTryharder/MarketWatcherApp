@@ -26,7 +26,7 @@ public class DealsActivity extends BaseActivity {
 
     String JsonURL;
     RequestQueue requestQueue;
-    String access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1YTc4ODExZjgyNmVmYzdlYzE2M2VlOGUiLCJpYXQiOjE1MTc4NDY5NzUsImV4cCI6MTUxODI3ODk3NX0.o8D3henhAztT-JTuX8ihePR0sWqVL6Sw4OoQENc4jR0";
+    String access_token;
 
     private ListView mListView;
 
@@ -35,6 +35,8 @@ public class DealsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setTitle(R.string.deals);
         setContentView(R.layout.activity_deals);
+
+        access_token = getToken();
 
         final List<CatalogItem> items = new ArrayList<CatalogItem>();
 

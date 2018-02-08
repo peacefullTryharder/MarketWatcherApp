@@ -49,7 +49,7 @@ public class ArticleActivity extends BaseActivity {
 
     private String JsonArticleURL, JsonGraphURL;
     private RequestQueue requestQueue;
-    private String access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1YTc4ODExZjgyNmVmYzdlYzE2M2VlOGUiLCJpYXQiOjE1MTc4NDY5NzUsImV4cCI6MTUxODI3ODk3NX0.o8D3henhAztT-JTuX8ihePR0sWqVL6Sw4OoQENc4jR0";
+    private String access_token;
 
     private TextView Name = null;
     private TextView Category = null;
@@ -89,6 +89,8 @@ public class ArticleActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article);
 
+        access_token = getToken();
+
         final float scale = getApplicationContext().getResources().getDisplayMetrics().density;
         final int pixels = (int) (50 * scale + 0.5f);
 
@@ -114,13 +116,9 @@ public class ArticleActivity extends BaseActivity {
         Brand = (TextView) findViewById(R.id.txtBrandArticleActivity);
         MinPrice = (TextView) findViewById(R.id.txtMinPriceArticleActivity);
         MaxPrice = (TextView) findViewById(R.id.txtMaxPriceArticleActivity);
-<<<<<<< HEAD
-=======
+
         mShareView = (ImageButton) findViewById(R.id.share);
 
-        CheckboxSeries = (CheckBox) findViewById(R.id.checkboxSeries);
-
->>>>>>> f6cb0638f44033a88340d31f28a1d1efa256c1f0
         ArticleImage = (ImageView) findViewById(R.id.imgArticleOnConsultation);
 
         MarketPlacesView = (ListView) findViewById(R.id.listArticle);
@@ -250,16 +248,13 @@ public class ArticleActivity extends BaseActivity {
                                         graph.addSeries(mySeries.get(i));
                                     }
 
-                                    /*
 
-                                    graph.getViewport().setMinY(2000);
-                                    graph.getViewport().setMaxY(4000);
+
 
                                     graph.getViewport().setMinX(0);
-                                    graph.getViewport().setMaxX(2000);
+                                    graph.getViewport().setMaxX(response.getJSONObject(i).getJSONArray("data").length());
 
-                                    graph.getViewport().setYAxisBoundsManual(true);
-                                    graph.getViewport().setXAxisBoundsManual(true); */
+                                    graph.getViewport().setXAxisBoundsManual(true);
 
                                 }
                             }

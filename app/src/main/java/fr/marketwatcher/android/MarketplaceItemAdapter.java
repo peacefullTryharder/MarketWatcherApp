@@ -51,13 +51,6 @@ public class MarketplaceItemAdapter extends ArrayAdapter<MarketplaceItem> {
         new DownloadImageFromInternet(viewHolder.imgMarketplace)
                 .execute(marketplaceItem.getImageUrl());
 
-        /* viewHolder.checkboxSeries.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                marketplaceItem.setCheckedValue(!marketplaceItem.getCheckedValue());
-            }
-        }); */
-
         return convertView;
     }
 

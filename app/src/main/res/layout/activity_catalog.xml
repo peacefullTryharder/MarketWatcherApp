@@ -23,13 +23,14 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="6dp"/>
 
-    <HorizontalScrollView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/categoryMenuCatalog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="none">
 
 
-            <RadioGroup
+            <!-- <RadioGroup
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
@@ -48,82 +49,9 @@
                     android:button="@android:color/transparent"
                     android:textColor="@drawable/category_radio_text_color"/>
 
-                <RadioButton
-                    android:id="@+id/radioButton2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Electroménager"
-                    android:background="@drawable/category_radio"
-                    android:textSize="16sp"
-                    android:padding="16dp"
-                    android:button="@android:color/transparent"
-                    android:textColor="@drawable/category_radio_text_color"/>
+            </RadioGroup> -->
 
-                <RadioButton
-                    android:id="@+id/radioButton3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/category_radio"
-                    android:layout_weight="1"
-                    android:padding="16dp"
-                    android:text="Sport"
-                    android:textSize="16sp"
-                    android:button="@android:color/transparent"
-                    android:textColor="@drawable/category_radio_text_color"/>
-
-
-                <RadioButton
-                android:id="@+id/radioButton4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/category_radio"
-                android:layout_weight="1"
-                android:text="Vêtements"
-                android:textSize="16sp"
-                android:padding="16dp"
-                android:button="@android:color/transparent"
-                android:textColor="@drawable/category_radio_text_color" />
-
-                <RadioButton
-                    android:id="@+id/radioButton5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/category_radio"
-                    android:layout_weight="1"
-                    android:text="Mobilier"
-                    android:textSize="16sp"
-                    android:padding="16dp"
-                    android:button="@android:color/transparent"
-                    android:textColor="@drawable/category_radio_text_color" />
-
-                <RadioButton
-                    android:id="@+id/radioButton6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/category_radio"
-                    android:layout_weight="1"
-                    android:text="Utilitaires"
-                    android:textSize="16sp"
-                    android:padding="16dp"
-                    android:button="@android:color/transparent"
-                    android:textColor="@drawable/category_radio_text_color" />
-
-                <RadioButton
-                    android:id="@+id/radioButton7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/category_radio"
-                    android:layout_weight="1"
-                    android:text="Gobelets"
-                    android:textSize="16sp"
-                    android:padding="16dp"
-                    android:button="@android:color/transparent"
-                    android:textColor="@drawable/category_radio_text_color" />
-
-            </RadioGroup>
-
-    </HorizontalScrollView>
+    </android.support.v7.widget.RecyclerView>
 
     <LinearLayout
         android:layout_width="match_parent"
