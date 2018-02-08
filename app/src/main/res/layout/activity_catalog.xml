@@ -9,12 +9,20 @@
     android:focusable="true"
     android:focusableInTouchMode="true">
 
+    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:indeterminate="true"
+        android:id="@+id/catalogProgressBar"
+        app:mpb_progressStyle="horizontal"
+        app:mpb_useIntrinsicPadding="false"
+        style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal" />
 
     <EditText
         android:id="@+id/catalogSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Rechercher"
+        android:hint="@string/catalogSearch"
         android:inputType="text"
         android:textSize="24sp"
         android:drawableLeft="@drawable/ic_catalog_search"
@@ -63,7 +71,7 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true" />
-            
+
 
     </LinearLayout>
 
