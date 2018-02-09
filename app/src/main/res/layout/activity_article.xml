@@ -34,7 +34,6 @@
                     android:id="@+id/imgArticleOnConsultation"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:src="@drawable/tv"
                     android:padding="6dp"/>
 
 

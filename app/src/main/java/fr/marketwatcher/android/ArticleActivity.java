@@ -247,6 +247,7 @@ public class ArticleActivity extends BaseActivity {
                             Random rnd = new Random();
 
                             String localMarketplaceTmp;
+                            int k = 0;
 
                             for (int i=0; i<response.length(); i++)
                             {
@@ -262,7 +263,7 @@ public class ArticleActivity extends BaseActivity {
                                                     : (response.getJSONObject(i).getJSONObject("_id").getString("marketplace").substring(0, 10) + ".."),
                                             response.getJSONObject(i).getJSONArray("data").getJSONObject(response.getJSONObject(i).getJSONArray("data").length()-1).getString("price"),
                                             getMarketplaceImageUrl(response.getJSONObject(i).getJSONObject("_id").getString("marketplace")),
-                                            localMarketplaceTmp.equals(MarketplaceMax) || localMarketplaceTmp.equals(MarketplaceMin)));
+                                            ((k<2) ? localMarketplaceTmp.equals(MarketplaceMax) || localMarketplaceTmp.equals(MarketplaceMin) : false)));
 
                                     mySeries.add(new LineGraphSeries<>(
                                             getDatasFromJSONArray(response.getJSONObject(i).getJSONArray("data"))));
@@ -270,9 +271,13 @@ public class ArticleActivity extends BaseActivity {
                                     // To display default series (min & max)
                                     if (localMarketplaceTmp.equals(MarketplaceMax) || localMarketplaceTmp.equals(MarketplaceMin))
                                     {
-                                        mySeries.get(i).setColor(Color.parseColor(graphColors[i]));
-                                        mySeries.get(i).setThickness(6);
-                                        graph.addSeries(mySeries.get(i));
+                                         // Blindage immonde qui est faux ^^
+                                        if (k<2){
+                                            mySeries.get(i).setColor(Color.parseColor(graphColors[i]));
+                                            mySeries.get(i).setThickness(6);
+                                            graph.addSeries(mySeries.get(i));
+                                            k++;
+                                        }
                                     }
 
 
@@ -489,7 +494,7 @@ public class ArticleActivity extends BaseActivity {
                             ((Integer.parseInt(("" + articleDatas.getJSONObject("history").getJSONObject("min").getDouble("price")).split("\\.")[1]) == 0) ?
                                     ("" + articleDatas.getJSONObject("history").getJSONObject("min").getDouble("price")).split("\\.")[0] :
                                     (("" + articleDatas.getJSONObject("history").getJSONObject("min").getDouble("price")).split("\\.")[0] + ","
-                                            + ("" + articleDatas.getJSONObject("history").getJSONObject("min").getDouble("price")).split("\\.")[1])) + "€"
+                                            + ("" + articleDatas.getJSONObject("history").getJSONObject("min").getDouble("price")).split("\\.")[1])) + "€ (min)"
                     ) : "");
 
             MaxPrice.setText(((articleDatas.has("history") ?
@@ -498,7 +503,7 @@ public class ArticleActivity extends BaseActivity {
                             ((Integer.parseInt(("" + articleDatas.getJSONObject("history").getJSONObject("max").getDouble("price")).split("\\.")[1]) == 0) ?
                                     ("" + articleDatas.getJSONObject("history").getJSONObject("max").getDouble("price")).split("\\.")[0] :
                                     (("" + articleDatas.getJSONObject("history").getJSONObject("max").getDouble("price")).split("\\.")[0] + ","
-                                            + ("" + articleDatas.getJSONObject("history").getJSONObject("max").getDouble("price")).split("\\.")[1])) + "€"
+                                            + ("" + articleDatas.getJSONObject("history").getJSONObject("max").getDouble("price")).split("\\.")[1])) + "€ (max)"
                     ) : "");
 
             productName = articleDatas.has("name") ?
@@ -543,14 +548,24 @@ public class ArticleActivity extends BaseActivity {
             case "Cultura":
             case "Cultura.com":
                 return "https://recrutement.cultura.com/wp-content/uploads/2017/10/logocultura.png";
+            case "Conforama":
+                return "https://yt3.ggpht.com/-dYCfhiGJFP4/AAAAAAAAAAI/AAAAAAAAAAA/mnaiL4O69a8/s100-mo-c-c0xffffffff-rj-k-no/photo.jpg";
+            case "Intermarché":
+            case "Intermarche":
+                return "https://yt3.ggpht.com/-5i2kx1ySioo/AAAAAAAAAAI/AAAAAAAAAAA/HTvwFV9sGes/s100-mo-c-c0xffffffff-rj-k-no/photo.jpg";
             case "Boulanger":
                 return "https://media.glassdoor.com/sql/846210/boulanger-squarelogo-1462867429355.png";
+            case "CDiscount":
+                return "https://yt3.ggpht.com/-glCnQuggty4/AAAAAAAAAAI/AAAAAAAAAAA/Mu_qMlU3NyM/s100-mo-c-c0xffffffff-rj-k-no/photo.jpg";
             case "Ubaldi":
             case "Ubaldi.com":
                 return "https://media.custplace.com/users_pictures/1460726645.png";
             case "iacono":
             case "iacono.fr":
                 return "https://www.iacono.fr/boutique/images_boutique/logo/logoPetit.jpg";
+            case "Amazon":
+            case "Amazon.fr":
+                return "https://images.sftcdn.net/images/t_optimized,f_auto/p/09acf18a-9a64-11e6-a2ec-00163ec9f5fa/1927264272/amazon-pour-windows-10-logo.png";
             case "Samsung":
             case "Samsung Shop France":
                 return "https://arwac.be/files/uploads/2015/03/samsung-logo.jpg";
@@ -561,8 +576,10 @@ public class ArticleActivity extends BaseActivity {
             case "PriceMinister - Rakuten":
             case "PriceMinister Rakuten":
                 return "https://media.licdn.com/mpr/mpr/shrinknp_100_100/AAIA_wDGAAAAAQAAAAAAAA1lAAAAJGY0MGI3MzM1LTkyMmUtNDlhNi1iMmY0LTBjZTBjMzA2MjJlOA.png";
+            case "Materiel.net":
+                return "data:image/jpeg;base64,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";
             default:
-                return "";
+                return "http://www.jlucas.fr/modeles/peel7/images/cart-logo.png";
         }
     }
 
